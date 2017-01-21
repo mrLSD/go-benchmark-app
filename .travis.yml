@@ -1,0 +1,14 @@
+language: go
+go_import_path: github.com/mrlsd/echo-cms
+go:
+  - 1.6
+  - 1.7
+  - tip
+matrix:
+  allow_failures:
+    - go: tip
+
+script:
+  - diff -u <(echo -n) <(gofmt -d .)
+  - go vet $(go list ./... | grep -v /vendor/)
+  - go build

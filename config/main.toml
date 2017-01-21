@@ -1,2 +1,42 @@
 title = "CMS benchmarks"
 version = "0.1"
+# Delay via try in seconds
+delay = 20
+# How much we should try
+try = 10
+
+# ab benchmarks parametres
+[ab]
+concurency = 5000
+keepalive = false
+requests = 10000
+
+# wrk benchmarks parametres
+[wrk]
+connections = 5000
+duration = 10
+threads = 1000
+
+# siege benchmarks parametres
+[siege]
+concurrent = 100
+
+[[app]]
+title = "Iron pure & minimal"
+path = "$HOME/rs/iron-cms/target/release/iron-cms"
+params = []
+
+[[app]]
+title = "Nickel pure & minimal"
+path = "$HOME/rs/iron-cms/target/release/iron-cms"
+params = []
+
+[[app]]
+title = "Iron CMS"
+path = "$HOME/rs/iron-cms/target/release/iron-cms"
+params = []
+
+[[app]]
+title = "Nickel CMS"
+path = "$HOME/rs/nickel-cms/target/release/nickel-cms"
+params = []

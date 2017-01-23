@@ -1,4 +1,6 @@
+# Title for describing benchmarks
 title = "CMS benchmarks"
+# Benchmarks version
 version = "0.1"
 # Delay via try in seconds
 delay = 20
@@ -21,22 +23,19 @@ threads = 1000
 [siege]
 concurrent = 100
 
+# Applications parametres
 [[app]]
 title = "Iron pure & minimal"
 path = "$HOME/rs/iron-cms/target/release/iron-cms"
-params = []
 
 [[app]]
 title = "Nickel pure & minimal"
 path = "$HOME/rs/iron-cms/target/release/iron-cms"
-params = []
 
 [[app]]
 title = "Iron CMS"
 path = "$HOME/rs/iron-cms/target/release/iron-cms"
-params = []
 
 [[app]]
 title = "Nickel CMS"
 path = "$HOME/rs/nickel-cms/target/release/nickel-cms"
-params = []

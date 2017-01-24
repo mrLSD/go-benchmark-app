@@ -5,6 +5,8 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+const CONFIG_FILE = "config/main.toml"
+
 type Config struct {
 	Title   string
 	Version string
@@ -39,8 +41,8 @@ type AppConfig struct {
 
 func LoadConfig() *Config {
 	var config Config
-	if _, err := toml.DecodeFile("config/main.toml", &config); err != nil {
-		panic(fmt.Sprintf("Faile to lad config: %v", err))
+	if _, err := toml.DecodeFile(CONFIG_FILE, &config); err != nil {
+		panic(fmt.Sprintf("Failed to load config: %s\nReason: %v", CONFIG_FILE, err))
 	}
 	return &config
 }

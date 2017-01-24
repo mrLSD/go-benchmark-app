@@ -7,16 +7,16 @@
 default: run
 
 run:
-        @go build && ./go-benchmark-app
-        @rm -f ./go-benchmark-app
+	@go build && ./go-benchmark-app
+	@rm -f ./go-benchmark-app
 
 test:
-        @go test -v  $(go list ./... 2>&1 | grep -v "vendor")
-        @go vet -v  $(go list ./... 2>&1 | grep -v "vendor")
-        @echo $(gocover)
+	@go test . -covermode=count
+	@go vet -v  $(go list ./... 2>&1 | grep -v "vendor")
+	@echo $(gocover)
 
 build:
-        @go build
+	@go build
 
 fmt:
-        @gofmt -w -l .
+	@gofmt -w -l .

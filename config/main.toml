@@ -22,6 +22,7 @@ threads = 1000
 # siege benchmarks parametres
 [siege]
 concurrent = 100
+time = 30
 
 # Applications parametres
 [[app]]

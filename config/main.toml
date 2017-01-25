@@ -26,16 +26,16 @@ concurrent = 100
 # Applications parametres
 [[app]]
 title = "Iron pure & minimal"
-path = "$HOME/rs/iron-cms/target/release/iron-cms"
+path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
 
 [[app]]
 title = "Nickel pure & minimal"
-path = "$HOME/rs/iron-cms/target/release/iron-cms"
+path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
 
 [[app]]
 title = "Iron CMS"
-path = "$HOME/rs/iron-cms/target/release/iron-cms"
+path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
 
 [[app]]
 title = "Nickel CMS"
-path = "$HOME/rs/nickel-cms/target/release/nickel-cms"
+path = "/home/evgeny/rs/nickel-cms/target/release/nickel-cms"

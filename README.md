@@ -1,4 +1,4 @@
-# Go Benchmark App [![Build Status](https://travis-ci.org/mrLSD/go-benchmark-app.svg?branch=master)](https://travis-ci.org/mrLSD/go-benchmark-app)   [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/mrLSD/go-benchmark-app/master/LICENSE)
+# Go Benchmark App [![Build Status](https://travis-ci.org/mrLSD/go-benchmark-app.svg?branch=master)](https://travis-ci.org/mrLSD/go-benchmark-app)   [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/mrLSD/go-benchmark-app/master/LICENSE)  [![Coverage Status](https://coveralls.io/repos/github/mrLSD/go-benchmark-app/badge.svg?branch=master)](https://coveralls.io/github/mrLSD/go-benchmark-app?branch=master)
 _The efficiency and speed of application - our goal and the basic idea._
 
 Application for HTTP-benchmarking via different rules and configurations.

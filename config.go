@@ -5,7 +5,12 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-const CONFIG_FILE = "config/main.toml"
+const (
+	CONFIG_FILE = "config/main.toml"
+	AB_BENCH    = "wrk"
+	WRK_BENCH   = "wrk"
+	SIEGE_BENCH = "siege"
+)
 
 type Config struct {
 	Title   string
@@ -37,6 +42,7 @@ type SiegeConfig struct {
 type AppConfig struct {
 	Title string
 	Path  string
+	url   []string
 }
 
 func LoadConfig() *Config {

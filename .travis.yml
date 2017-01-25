@@ -8,7 +8,15 @@ matrix:
   allow_failures:
     - go: tip
 
+before_install:
+  - go get golang.org/x/tools/cmd/cover
+  - go get github.com/mattn/goveralls
+  - go get github.com/wadey/gocovmerge
+
 script:
+  - go build
   - diff -u <(echo -n) <(gofmt -d .)
   - go vet $(go list ./... | grep -v /vendor/)
-  - go build
+  - go test . -v -covermode=count -coverprofile=main.coverprofile
+  - gocovmerge *.coverprofile > merged.coverprofile
+  - goveralls -coverprofile=merged.coverprofile -service=travis-ci

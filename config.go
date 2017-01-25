@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/BurntSushi/toml"
-	"log"
 )
 
 const (
@@ -54,10 +53,10 @@ type AppConfig struct {
 }
 
 // LoadConfig - load TOML config file
-func LoadConfig(file string) *Config {
+func LoadConfig(file string) (*Config, error) {
 	var config Config
 	if _, err := toml.DecodeFile(file, &config); err != nil {
-		log.Fatal(fmt.Sprintf("Failed to load config: %s\nReason: %v", file, err))
+		return &Config{}, fmt.Errorf("Failed to load config: %s\nReason: %v", file, err)
 	}
-	return &config
+	return &config, nil
 }

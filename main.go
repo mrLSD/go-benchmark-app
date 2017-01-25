@@ -1,10 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 func main() {
-	config := LoadConfig(CONFIG_FILE)
+	config, err := LoadConfig(CONFIG_FILE)
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Printf("%s\nversion: %s\n", config.Title, config.Version)
-
-	RunBanchmars(config)
+	if err := RunBanchmars(config); err != nil {
+		log.Fatal(err)
+	}
 }

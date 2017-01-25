@@ -1,19 +1,25 @@
 package main
 
 import (
-	"log"
 	"os/exec"
 )
 
-func RunBanchmars(config *Config) {
+func RunBanchmars(config *Config) error {
 	for i := 0; i < len(config.App); i++ {
 		println("===============================")
 		println(config.App[i].Title)
 		cmd := exec.Command(config.App[i].Path)
 		if err := cmd.Start(); err != nil {
-			log.Fatal(err)
+			return err
 		}
-		println(config.Ab.BenchCommand("http://localhost:3000/"))
-		cmd.Process.Kill()
+		command, err := config.Ab.BenchCommand("http://localhost:3000/")
+		if err != nil {
+			return err
+		}
+		println(command)
+		if err := cmd.Process.Kill(); err != nil {
+			return err
+		}
 	}
+	return nil
 }

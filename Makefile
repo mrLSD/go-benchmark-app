@@ -20,3 +20,6 @@ build:
 
 fmt:
 	@gofmt -w -l .
+
+cover:
+	@go test . -tags all -coverprofile=c.out && go tool cover -html=c.out && unlink c.out

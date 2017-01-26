@@ -4,6 +4,7 @@ import (
 	"testing"
 )
 
+// TestAbBenchCommand - test AB command generator
 func TestAbBenchCommand(t *testing.T) {
 	config := &Config{}
 	config.Ab.Keepalive = false
@@ -33,6 +34,7 @@ func TestAbBenchCommand(t *testing.T) {
 	}
 }
 
+// TestWrkBenchCommand - test WRK command generator
 func TestWrkBenchCommand(t *testing.T) {
 	config := &Config{}
 	config.Wrk.Connections = 1
@@ -65,5 +67,30 @@ func TestWrkBenchCommand(t *testing.T) {
 	_, err = config.Wrk.BenchCommand("test")
 	if err == nil {
 		t.Fatal("Unexpected result for Threads")
+	}
+}
+
+// TestSiegeBenchCommand - test Siege command generator
+func TestSiegeBenchCommand(t *testing.T) {
+	config := &Config{}
+	config.Siege.Concurrent = 1
+	config.Siege.Time = 1
+	_, err := config.Siege.BenchCommand("test")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	config.Siege.Concurrent = 0
+	config.Siege.Time = 1
+	_, err = config.Siege.BenchCommand("test")
+	if err == nil {
+		t.Fatal("Unexpected result for Concurrent")
+	}
+
+	config.Siege.Concurrent = 1
+	config.Siege.Time = 0
+	_, err = config.Siege.BenchCommand("test")
+	if err == nil {
+		t.Fatal("Unexpected result for Time")
 	}
 }

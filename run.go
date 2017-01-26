@@ -18,6 +18,19 @@ func RunBanchmars(config *Config) error {
 			return err
 		}
 		println(command)
+
+		command, err = config.Wrk.BenchCommand("http://localhost:3000/")
+		if err != nil {
+			return err
+		}
+		println(command)
+
+		command, err = config.Siege.BenchCommand("http://localhost:3000/")
+		if err != nil {
+			return err
+		}
+		println(command)
+
 		if err := cmd.Process.Kill(); err != nil {
 			return err
 		}

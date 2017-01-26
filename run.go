@@ -12,6 +12,7 @@ func RunBanchmars(config *Config) error {
 		if err := cmd.Start(); err != nil {
 			return err
 		}
+
 		command, err := config.Ab.BenchCommand("http://localhost:3000/")
 		if err != nil {
 			return err

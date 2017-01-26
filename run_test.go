@@ -2,10 +2,11 @@ package main
 
 import (
 	"testing"
+	"os"
 )
 
 // TestRunBanchmars - with basic cinfig
-func TestRunBanchmars(t *testing.T) {
+func TestRunBanchmarls(t *testing.T) {
 	config, err := LoadConfig(CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
@@ -13,7 +14,10 @@ func TestRunBanchmars(t *testing.T) {
 
 	err = RunBanchmars(config)
 	if err != nil {
-		t.Fatal(err)
+		_, ok := err.(*os.PathError)
+		if !ok {
+			t.Fatal(err)
+		}
 	}
 
 	if len(config.App) > 0 {
@@ -65,7 +69,10 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 
 	err = RunBanchmars(config)
 	if err != nil {
-		t.Fatal(err)
+		_, ok := err.(*os.PathError)
+		if !ok {
+			t.Fatal(err)
+		}
 	}
 
 	// Wrong AB Concurency parameter
@@ -73,7 +80,10 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	abConfig.Ab.Concurency = 0
 	err = RunBanchmars(abConfig)
 	if err == nil {
-		t.Fatal("Unexpected exec for abConfig")
+		_, ok := err.(*os.PathError)
+		if !ok {
+			t.Fatal("Unexpected exec for abConfig")
+		}
 	}
 
 	// Wrong WRK Connections parameter
@@ -81,7 +91,10 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	wrkConfig.Wrk.Connections = 0
 	err = RunBanchmars(wrkConfig)
 	if err == nil {
-		t.Fatal("Unexpected exec for wrkConfig")
+		_, ok := err.(*os.PathError)
+		if !ok {
+			t.Fatal("Unexpected exec for wrkConfig")
+		}
 	}
 
 	// Wrong Siege Concurrent parameter
@@ -89,6 +102,9 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	siegeConfig.Siege.Concurrent = 0
 	err = RunBanchmars(siegeConfig)
 	if err == nil {
-		t.Fatal("Unexpected exec for siegeConfig")
+		_, ok := err.(*os.PathError)
+		if !ok {
+			t.Fatal("Unexpected exec for siegeConfig")
+		}
 	}
 }

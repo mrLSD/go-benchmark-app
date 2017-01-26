@@ -1,8 +1,10 @@
 package main
 
 import (
-	"testing"
+	"fmt"
 	"os"
+	"os/exec"
+	"testing"
 )
 
 // TestRunBanchmars - with basic cinfig
@@ -18,16 +20,6 @@ func TestRunBanchmarls(t *testing.T) {
 		if !ok {
 			t.Fatal(err)
 		}
-	}
-
-	if len(config.App) > 0 {
-		config.App[0].Path = "test/test"
-	} else {
-		t.Fatal("You should have at least one App")
-	}
-	err = RunBanchmars(config)
-	if err == nil {
-		t.Fatal("Unexpected exec start result")
 	}
 }
 
@@ -67,6 +59,12 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	config.Siege.Concurrent = 1
 	config.Siege.Time = 1
 
+	// Re-init app
+	config.App = []AppConfig{AppConfig{
+		Title: "Tset Bash",
+		Path:  "/bin/bash",
+	}}
+
 	err = RunBanchmars(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
@@ -76,9 +74,9 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	}
 
 	// Wrong AB Concurency parameter
-	abConfig := config
+	abConfig := *config
 	abConfig.Ab.Concurency = 0
-	err = RunBanchmars(abConfig)
+	err = RunBanchmars(&abConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -87,9 +85,9 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	}
 
 	// Wrong WRK Connections parameter
-	wrkConfig := config
+	wrkConfig := *config
 	wrkConfig.Wrk.Connections = 0
-	err = RunBanchmars(wrkConfig)
+	err = RunBanchmars(&wrkConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -98,13 +96,23 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	}
 
 	// Wrong Siege Concurrent parameter
-	siegeConfig := config
+	siegeConfig := *config
 	siegeConfig.Siege.Concurrent = 0
-	err = RunBanchmars(siegeConfig)
+	err = RunBanchmars(&siegeConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
 			t.Fatal("Unexpected exec for siegeConfig")
 		}
+	}
+
+	// Simulate Wrong Kill Process
+	KillProcess = func(cmd *exec.Cmd) error {
+		return fmt.Errorf("test %s", "test")
+	}
+
+	err = RunBanchmars(config)
+	if err == nil {
+		t.Fatal("Unexpected exec for KillProcess")
 	}
 }

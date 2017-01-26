@@ -4,6 +4,9 @@ import (
 	"os/exec"
 )
 
+var KillProcess = killProcrss
+
+// RunBanchmars - run all benchmarks
 func RunBanchmars(config *Config) error {
 	for i := 0; i < len(config.App); i++ {
 		println("===============================")
@@ -31,9 +34,14 @@ func RunBanchmars(config *Config) error {
 		}
 		println(command)
 
-		if err := cmd.Process.Kill(); err != nil {
+		if err := KillProcess(cmd); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+// killProcrss - immediately kill process
+func killProcrss(cmd *exec.Cmd) error {
+	return cmd.Process.Kill()
 }

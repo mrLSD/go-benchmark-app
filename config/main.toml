@@ -27,7 +27,7 @@ time = 30
 # Applications parametres
 [[app]]
 title = "Iron pure & minimal"
-path = "/home/evgeny/rs/iron-cms/target/release/iron-cms1"
+path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
 
 [[app]]
 title = "Nickel pure & minimal"

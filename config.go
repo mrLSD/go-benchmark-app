@@ -6,9 +6,13 @@ import (
 )
 
 const (
+	// Default config file
 	CONFIG_FILE = "config/main.toml"
-	AB_BENCH    = "wrk"
-	WRK_BENCH   = "wrk"
+	// ab benchmark tool
+	AB_BENCH = "ab"
+	// wrk benchmark tool
+	WRK_BENCH = "wrk"
+	// siege benchmark tool
 	SIEGE_BENCH = "siege"
 )
 

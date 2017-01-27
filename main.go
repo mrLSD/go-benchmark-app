@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// LogFatal - alias for logger, for simplify testing coverage
 var LogFatal = log.Fatal
 
 func main() {

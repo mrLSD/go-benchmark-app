@@ -7,12 +7,24 @@ import (
 	"testing"
 )
 
+// Alias for success runned command
+var runCommandSuccess = func(c string) ([]byte, error) {
+	return []byte("test"), nil
+}
+
+// Alias for failed runned command
+var runCommandFailed = func(c string) ([]byte, error) {
+	return []byte("test"), fmt.Errorf("test %s", "test")
+}
+
 // TestRunBanchmars - with basic cinfig
 func TestRunBanchmarls(t *testing.T) {
 	config, err := LoadConfig(CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	RunCommand = runCommandSuccess
 
 	err = RunBanchmars(config)
 	if err != nil {
@@ -61,10 +73,12 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 
 	// Re-init app
 	config.App = []AppConfig{AppConfig{
-		Title: "Tset Bash",
+		Title: "Test Bash",
 		Path:  "/bin/bash",
 	}}
 
+	// Success benchmarks
+	RunCommand = runCommandSuccess
 	err = RunBanchmars(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
@@ -72,6 +86,19 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+
+	// Failed benchmarks
+	RunCommand = runCommandFailed
+	err = RunBanchmars(config)
+	if err == nil {
+		_, ok := err.(*os.PathError)
+		if !ok {
+			t.Fatal("Unexpected exec for runCommandFailed")
+		}
+	}
+
+	// Return to Success Run command
+	RunCommand = runCommandSuccess
 
 	// Wrong AB Concurency parameter
 	abConfig := *config

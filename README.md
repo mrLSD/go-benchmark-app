@@ -1,9 +1,9 @@
 # Go Benchmark App 
-[![Build Status](https://travis-ci.org/mrLSD/go-benchmark-app.svg?branch=master)](https://travis-ci.org/mrLSD/go-benchmark-app)   [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/mrLSD/go-benchmark-app/master/LICENSE)  [![Coverage Status](https://coveralls.io/repos/github/mrLSD/go-benchmark-app/badge.svg?branch=master)](https://coveralls.io/github/mrLSD/go-benchmark-app?branch=master)
+[![Build Status](https://travis-ci.org/mrLSD/go-benchmark-app.svg?branch=master)](https://travis-ci.org/mrLSD/go-benchmark-app)   [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/mrLSD/go-benchmark-app/master/LICENSE)  [![Coverage Status](https://coveralls.io/repos/github/mrLSD/go-benchmark-app/badge.svg?branch=master)](https://coveralls.io/github/mrLSD/go-benchmark-app?branch=master)  [![Go Report Card](https://goreportcard.com/badge/github.com/mrLSD/go-benchmark-app)](https://goreportcard.com/report/github.com/mrLSD/go-benchmark-app)  [![GoDoc](https://godoc.org/github.com/mrLSD/go-benchmark-app?status.png)](https://godoc.org/github.com/mrLSD/go-benchmark-app)
 
 _The efficiency and speed of application - our goal and the basic idea._
 
-[![Build Status](http://letzgro.net/wp-content/uploads/2016/01/banners-4.png)]
+![Go Benchmark App ](http://letzgro.net/wp-content/uploads/2016/01/banners-4.png)
 
 Application for HTTP-benchmarking via different rules and configurations.
 
@@ -61,6 +61,7 @@ path = "fool/path/to/app"
 ````
 
 ## How to use
+* Installed `Go 1.6+`
 * Check is benchmarks tools installed:
 
 	`$ whereis ab`

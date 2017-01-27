@@ -72,7 +72,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	config.Siege.Time = 1
 
 	// Re-init app
-	config.App = []AppConfig{AppConfig{
+	config.App = []AppConfig{{
 		Title: "Test Bash",
 		Path:  "/bin/bash",
 	}}

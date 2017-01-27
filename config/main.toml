@@ -9,9 +9,9 @@ try = 10
 
 # ab benchmarks parametres
 [ab]
-concurency = 5000
+concurency = 500
 keepalive = false
-requests = 10000
+requests = 1000
 
 # wrk benchmarks parametres
 [wrk]

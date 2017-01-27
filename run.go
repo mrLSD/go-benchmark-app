@@ -32,12 +32,12 @@ func RunBanchmars(config *Config) error {
 		}
 
 		for j := 0; j < len(benchmarkTools); j++ {
-			command, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
+			command, params, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
 			if err != nil {
 				return err
 			}
 			// Run specific bench-tool
-			output, err := RunCommand(command)
+			output, err := RunCommand(command, params...)
 			if err != nil {
 				KillProcess(cmd)
 				return err
@@ -59,6 +59,6 @@ func killProcrss(cmd *exec.Cmd) error {
 
 // killProcrss - execute command and
 // returns its standard output
-func runCommand(command string) ([]byte, error) {
-	return exec.Command(command).Output()
+func runCommand(command string, args ...string) ([]byte, error) {
+	return exec.Command(command, args...).Output()
 }

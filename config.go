@@ -6,14 +6,14 @@ import (
 )
 
 const (
-	// Default config file
+	// CONFIG_FILE - default config file
 	CONFIG_FILE = "config/main.toml"
-	// ab benchmark tool
-	AB_BENCH = "ab"
-	// wrk benchmark tool
-	WRK_BENCH = "wrk"
-	// siege benchmark tool
-	SIEGE_BENCH = "siege"
+	// AB_BENCH - ab benchmark tool
+	AB_BENCH = "/usr/bin/ab"
+	// WRK_BENCH - wrk benchmark tool
+	WRK_BENCH = "/usr/bin/wrk"
+	// SIEGE_BENCH - siege benchmark tool
+	SIEGE_BENCH = "/usr/bin/siege"
 )
 
 // Config - base config

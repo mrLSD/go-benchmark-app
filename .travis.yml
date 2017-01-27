@@ -1,5 +1,4 @@
 language: go
-go_import_path: github.com/mrlsd/echo-cms
 go:
   - 1.6
   - 1.7

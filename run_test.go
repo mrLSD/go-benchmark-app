@@ -8,12 +8,12 @@ import (
 )
 
 // Alias for success runned command
-var runCommandSuccess = func(c string) ([]byte, error) {
+var runCommandSuccess = func(c string, args ...string) ([]byte, error) {
 	return []byte("test"), nil
 }
 
 // Alias for failed runned command
-var runCommandFailed = func(c string) ([]byte, error) {
+var runCommandFailed = func(c string, args ...string) ([]byte, error) {
 	return []byte("test"), fmt.Errorf("test %s", "test")
 }
 

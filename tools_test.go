@@ -40,7 +40,7 @@ func TestWrkBenchCommand(t *testing.T) {
 	config.Wrk.Connections = 1
 	config.Wrk.Duration = 1
 	config.Wrk.Threads = 1
-	_, err := config.Wrk.BenchCommand("test")
+	_, _, err := config.Wrk.BenchCommand("test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -75,21 +75,21 @@ func TestSiegeBenchCommand(t *testing.T) {
 	config := &Config{}
 	config.Siege.Concurrent = 1
 	config.Siege.Time = 1
-	_, err := config.Siege.BenchCommand("test")
+	_, _, err := config.Siege.BenchCommand("test")
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	config.Siege.Concurrent = 0
 	config.Siege.Time = 1
-	_, err = config.Siege.BenchCommand("test")
+	_, _, err = config.Siege.BenchCommand("test")
 	if err == nil {
 		t.Fatal("Unexpected result for Concurrent")
 	}
 
 	config.Siege.Concurrent = 1
 	config.Siege.Time = 0
-	_, err = config.Siege.BenchCommand("test")
+	_, _, err = config.Siege.BenchCommand("test")
 	if err == nil {
 		t.Fatal("Unexpected result for Time")
 	}

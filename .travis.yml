@@ -19,3 +19,7 @@ script:
   - go test . -v -covermode=count -coverprofile=main.coverprofile
   - gocovmerge *.coverprofile > merged.coverprofile
   - goveralls -coverprofile=merged.coverprofile -service=travis-ci
+
+after_success:
+  - cp merged.coverprofile coverage.txt
+  - bash <(curl -s https://codecov.io/bash)

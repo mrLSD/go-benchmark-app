@@ -2,10 +2,12 @@
 title = "CMS benchmarks"
 # Benchmarks version
 version = "0.1"
-# Delay via try in seconds
-delay = 20
+# Delay via try (sec)
+delay = 5
 # How much we should try
 try = 10
+# How long wait when application guaranteed runned (sec)
+waittorun = 1
 
 # ab benchmarks parametres
 [ab]

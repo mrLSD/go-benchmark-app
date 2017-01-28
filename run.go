@@ -15,7 +15,7 @@ var KillProcess = killProcrss
 var RunCommand = runCommand
 
 // RunBanchmars - run all benchmarks
-func RunBanchmars(config *Config) error {
+func RunBanchmarks(config *Config) error {
 	// Collect bench-tools to array
 	benchmarkTools := []struct {
 		tool BenchCommand
@@ -32,7 +32,7 @@ func RunBanchmars(config *Config) error {
 		if err := cmd.Start(); err != nil {
 			return fmt.Errorf("Failed execute:\n\t%s\n\t%s", config.App[i].Path, err.Error())
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(config.WaitToRun * time.Second)
 
 		for j := 0; j < len(benchmarkTools); j++ {
 			command, params, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
@@ -47,7 +47,7 @@ func RunBanchmars(config *Config) error {
 				println(string(output))
 				return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", command, params, err)
 			}
-			time.Sleep(3 * time.Second)
+			time.Sleep(config.Delay * time.Second)
 		}
 
 		if err := KillProcess(cmd); err != nil {

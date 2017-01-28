@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/BurntSushi/toml"
+	"time"
 )
 
 const (
@@ -18,14 +19,15 @@ const (
 
 // Config - base config
 type Config struct {
-	Title   string
-	Version string
-	Delay   int
-	Try     int
-	Ab      AbConfig
-	Wrk     WrkConfig
-	Siege   SiegeConfig
-	App     []AppConfig
+	Title     string
+	Version   string
+	Delay     time.Duration
+	WaitToRun time.Duration
+	Try       int
+	Ab        AbConfig
+	Wrk       WrkConfig
+	Siege     SiegeConfig
+	App       []AppConfig
 }
 
 // AbConfig - config for AB benchmark

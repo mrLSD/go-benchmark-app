@@ -9,15 +9,17 @@ import (
 
 // Alias for success runned command
 var runCommandSuccess = func(c string, args ...string) ([]byte, error) {
+	println("	=> runCommandSuccess")
 	return []byte("test"), nil
 }
 
 // Alias for failed runned command
 var runCommandFailed = func(c string, args ...string) ([]byte, error) {
+	println("	=> runCommandFailed")
 	return []byte("test"), fmt.Errorf("test %s", "test")
 }
 
-// TestRunBanchmars - with basic cinfig
+// TestRunBanchmarks - with basic cinfig
 func TestRunBanchmarls(t *testing.T) {
 	config, err := LoadConfig(CONFIG_FILE)
 	if err != nil {
@@ -28,8 +30,10 @@ func TestRunBanchmarls(t *testing.T) {
 	_, _ = runCommand("/bin/bash")
 
 	RunCommand = runCommandSuccess
+	config.WaitToRun = 0
+	config.Delay = 0
 
-	err = RunBanchmars(config)
+	err = RunBanchmarks(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -38,28 +42,31 @@ func TestRunBanchmarls(t *testing.T) {
 	}
 }
 
-// TestRunBanchmarsWithWrongAppPath - test with basic config
+// TestRunBanchmarksWithWrongAppPath - test with basic config
 // and wrong App Path
-func TestRunBanchmarsWithWrongAppPath(t *testing.T) {
+func TestRunBanchmarksWithWrongAppPath(t *testing.T) {
 	config, err := LoadConfig(CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	config.WaitToRun = 0
+	config.Delay = 0
 
 	if len(config.App) > 0 {
 		config.App[0].Path = "test/test"
 	} else {
 		t.Fatal("You should have at least one App")
 	}
-	err = RunBanchmars(config)
+	err = RunBanchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec start result")
 	}
 }
 
-// TestRunBanchmarsWithWrongParams - with basic config
+// TestRunBanchmarksWithWrongParams - with basic config
 // but some wrong params
-func TestRunBanchmarsWithWrongParams(t *testing.T) {
+func TestRunBanchmarksWithWrongParams(t *testing.T) {
 	config, err := LoadConfig(CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
@@ -74,6 +81,9 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	config.Siege.Concurrent = 1
 	config.Siege.Time = 1
 
+	config.WaitToRun = 0
+	config.Delay = 0
+
 	// Re-init app
 	config.App = []AppConfig{{
 		Title: "Test Bash",
@@ -82,7 +92,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 
 	// Success benchmarks
 	RunCommand = runCommandSuccess
-	err = RunBanchmars(config)
+	err = RunBanchmarks(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -92,7 +102,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 
 	// Failed benchmarks
 	RunCommand = runCommandFailed
-	err = RunBanchmars(config)
+	err = RunBanchmarks(config)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -106,7 +116,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	// Wrong AB Concurency parameter
 	abConfig := *config
 	abConfig.Ab.Concurency = 0
-	err = RunBanchmars(&abConfig)
+	err = RunBanchmarks(&abConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -117,7 +127,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	// Wrong WRK Connections parameter
 	wrkConfig := *config
 	wrkConfig.Wrk.Connections = 0
-	err = RunBanchmars(&wrkConfig)
+	err = RunBanchmarks(&wrkConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -128,7 +138,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 	// Wrong Siege Concurrent parameter
 	siegeConfig := *config
 	siegeConfig.Siege.Concurrent = 0
-	err = RunBanchmars(&siegeConfig)
+	err = RunBanchmarks(&siegeConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -141,7 +151,7 @@ func TestRunBanchmarsWithWrongParams(t *testing.T) {
 		return fmt.Errorf("test %s", "test")
 	}
 
-	err = RunBanchmars(config)
+	err = RunBanchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec for KillProcess")
 	}

@@ -19,7 +19,7 @@ func (ab *AbConfig) BenchCommand(url string) (string, []string, error) {
 		if ab.Concurency > ab.Requests {
 			return "", params, fmt.Errorf("ab requests  = %d, should be great or equal concurency = %d", ab.Requests, ab.Concurency)
 		}
-		params = append(params, "-c", string(ab.Concurency), "-n", string(ab.Requests))
+		params = append(params, "-c", fmt.Sprintf("%d", ab.Concurency), "-n", fmt.Sprintf("%d", ab.Requests))
 	} else {
 		return "", params, fmt.Errorf("ab concurency  = %d, should be great then 0", ab.Concurency)
 	}
@@ -31,17 +31,17 @@ func (ab *AbConfig) BenchCommand(url string) (string, []string, error) {
 func (wrk *WrkConfig) BenchCommand(url string) (string, []string, error) {
 	var params []string
 	if wrk.Connections > 0 {
-		params = append(params, fmt.Sprintf(" -c%d ", wrk.Connections))
+		params = append(params, fmt.Sprintf("-c%d", wrk.Connections))
 	} else {
 		return "", params, fmt.Errorf("wrk connections = %d,  should be great then 0", wrk.Connections)
 	}
 	if wrk.Duration > 0 {
-		params = append(params, fmt.Sprintf(" -d%ds ", wrk.Duration))
+		params = append(params, fmt.Sprintf("-d%ds", wrk.Duration))
 	} else {
 		return "", params, fmt.Errorf("wrk duration = %d, should be great then 0", wrk.Duration)
 	}
 	if wrk.Threads > 0 {
-		params = append(params, fmt.Sprintf(" -t%d ", wrk.Threads))
+		params = append(params, fmt.Sprintf("-t%d", wrk.Threads))
 	} else {
 		return "", params, fmt.Errorf("wrk threads = %d, should be great then 0", wrk.Threads)
 	}
@@ -54,12 +54,12 @@ func (wrk *WrkConfig) BenchCommand(url string) (string, []string, error) {
 func (s *SiegeConfig) BenchCommand(url string) (string, []string, error) {
 	var params []string
 	if s.Concurrent > 0 {
-		params = append(params, fmt.Sprintf(" -c%d ", s.Concurrent))
+		params = append(params, fmt.Sprintf("-c%d", s.Concurrent))
 	} else {
 		return "", params, fmt.Errorf("Siege concurrent = %d, should be great then 0", s.Concurrent)
 	}
 	if s.Time > 0 {
-		params = append(params, fmt.Sprintf(" -t%dS ", s.Time))
+		params = append(params, fmt.Sprintf("-t%dS", s.Time))
 	} else {
 		return "", params, fmt.Errorf("Siege time = %d, should be great then 0", s.Time)
 	}

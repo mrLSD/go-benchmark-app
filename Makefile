@@ -11,7 +11,7 @@ run:
 	@rm -f ./go-benchmark-app
 
 test:
-	@go test . -covermode=count
+	@go test . -v -covermode=count
 	@go vet -v  $(go list ./... 2>&1 | grep -v "vendor")
 	@echo $(gocover)
 
@@ -22,4 +22,4 @@ fmt:
 	@gofmt -w -l -s .
 
 cover:
-	@go test . -covermode=count -coverprofile=c.out && go tool cover -html=c.out && unlink c.out
+	@go test . -v -covermode=count -coverprofile=c.out && go tool cover -html=c.out && unlink c.out

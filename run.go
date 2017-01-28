@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os/exec"
+	"time"
 )
 
 // KillProcess - alias for Process.Kill()
@@ -28,25 +30,28 @@ func RunBanchmars(config *Config) error {
 		println(config.App[i].Title)
 		cmd := exec.Command(config.App[i].Path)
 		if err := cmd.Start(); err != nil {
-			return err
+			return fmt.Errorf("Failed execute:\n\t%s\n\t%s", config.App[i].Path, err.Error())
 		}
+		time.Sleep(1 * time.Second)
 
 		for j := 0; j < len(benchmarkTools); j++ {
 			command, params, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
 			if err != nil {
-				return err
+				return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", command, params, err)
 			}
 			// Run specific bench-tool
+			fmt.Printf("Run command: %s\n", command)
 			output, err := RunCommand(command, params...)
 			if err != nil {
 				KillProcess(cmd)
-				return err
+				println(string(output))
+				return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", command, params, err)
 			}
-			println(output)
+			time.Sleep(3 * time.Second)
 		}
 
 		if err := KillProcess(cmd); err != nil {
-			return err
+			return fmt.Errorf("KillProcess error: %s", err.Error())
 		}
 	}
 	return nil

@@ -24,6 +24,9 @@ func TestRunBanchmarls(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	// Simple check for runCommand
+	_, _ = runCommand("/bin/bash")
+
 	RunCommand = runCommandSuccess
 
 	err = RunBanchmars(config)

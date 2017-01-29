@@ -24,11 +24,11 @@ fmt:
 cover:
 	@go test ./tools -v -covermode=count -coverprofile=c.out && go tool cover -html=c.out && unlink c.out
 
-qwert:
+coverprofiles:
 	@rm -rf *.coverprofile
 	@for Package in `go list ./... | grep -v "vendor"` ; do \
 		x=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1` ; \
-		echo $$(go test -covermode=count -coverprofile=$$x.out $$Package) ; \
+		echo $$(go test -covermode=count -coverprofile=$$x.coverprofile $$Package) ; \
 		echo $$Package ; \
 	done
 

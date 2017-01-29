@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"testing"
+	cfg "github.com/mrlsd/go-benchmark-app/config"
 )
 
 // Alias for success runned command
@@ -21,7 +22,7 @@ var runCommandFailed = func(c string, args ...string) ([]byte, error) {
 
 // TestRunBanchmarks - with basic cinfig
 func TestRunBanchmarks(t *testing.T) {
-	config, err := LoadConfig(CONFIG_FILE)
+	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +46,7 @@ func TestRunBanchmarks(t *testing.T) {
 // TestRunBanchmarksWithWrongAppPath - test with basic config
 // and wrong App Path
 func TestRunBanchmarksWithWrongAppPath(t *testing.T) {
-	config, err := LoadConfig(CONFIG_FILE)
+	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,7 +68,7 @@ func TestRunBanchmarksWithWrongAppPath(t *testing.T) {
 // TestRunBanchmarksWithWrongParams - with basic config
 // but some wrong params
 func TestRunBanchmarksWithWrongParams(t *testing.T) {
-	config, err := LoadConfig(CONFIG_FILE)
+	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
 	}

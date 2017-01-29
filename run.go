@@ -25,9 +25,9 @@ func RunBanchmarks(config *config.Config) error {
 	benchmarkTools := []struct {
 		tool tools.BenchCommand
 	}{
-		{tool: &config.Ab},
-		{tool: &config.Wrk},
-		{tool: &config.Siege},
+		{tool: tools.AbTool{&config.Ab}},
+		{tool: tools.WrkTool{&config.Wrk}},
+		{tool: tools.SiegeTool{&config.Siege}},
 	}
 
 	for i := 0; i < len(config.App); i++ {

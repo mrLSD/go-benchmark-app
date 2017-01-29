@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/mrlsd/go-benchmark-app/config"
 	"log"
 )
 
@@ -9,7 +10,7 @@ import (
 var LogFatal = log.Fatal
 
 func main() {
-	config, err := LoadConfig(CONFIG_FILE)
+	config, err := config.LoadConfig(config.CONFIG_FILE)
 	if err != nil {
 		LogFatal(err)
 	}

@@ -20,7 +20,7 @@ var runCommandFailed = func(c string, args ...string) ([]byte, error) {
 }
 
 // TestRunBanchmarks - with basic cinfig
-func TestRunBanchmarls(t *testing.T) {
+func TestRunBanchmarks(t *testing.T) {
 	config, err := LoadConfig(CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)

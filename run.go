@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/mrlsd/go-benchmark-app/config"
+	"github.com/mrlsd/go-benchmark-app/tools"
 	"os/exec"
 	"time"
 )
@@ -15,10 +17,13 @@ var KillProcess = killProcrss
 var RunCommand = runCommand
 
 // RunBanchmars - run all benchmarks
-func RunBanchmarks(config *Config) error {
+func RunBanchmarks(config *config.Config) error {
+	var tst tools.AbResults
+	_ = tst
+
 	// Collect bench-tools to array
 	benchmarkTools := []struct {
-		tool BenchCommand
+		tool tools.BenchCommand
 	}{
 		{tool: &config.Ab},
 		{tool: &config.Wrk},
@@ -35,17 +40,17 @@ func RunBanchmarks(config *Config) error {
 		time.Sleep(config.WaitToRun * time.Second)
 
 		for j := 0; j < len(benchmarkTools); j++ {
-			command, params, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
+			results, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
 			if err != nil {
-				return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", command, params, err)
+				return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 			}
 			// Run specific bench-tool
-			fmt.Printf("Run command: %s\n", command)
-			output, err := RunCommand(command, params...)
+			fmt.Printf("Run command: %s\n", results.Command())
+			output, err := RunCommand(results.Command(), results.Params()...)
 			if err != nil {
 				KillProcess(cmd)
 				println(string(output))
-				return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", command, params, err)
+				return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 			}
 			time.Sleep(config.Delay * time.Second)
 		}

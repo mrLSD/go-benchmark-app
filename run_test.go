@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	cfg "github.com/mrlsd/go-benchmark-app/config"
 	"os"
 	"os/exec"
 	"testing"
-	cfg "github.com/mrlsd/go-benchmark-app/config"
 )
 
 // Alias for success runned command
@@ -86,7 +86,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 	config.Delay = 0
 
 	// Re-init app
-	config.App = []AppConfig{{
+	config.App = []cfg.AppConfig{{
 		Title: "Test Bash",
 		Path:  "/bin/bash",
 	}}

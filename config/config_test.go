@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 // TestLoadConfig - test load config and exactly one element
 func TestLoadConfig(t *testing.T) {
 	var config *Config
-	config, err := LoadConfig(CONFIG_FILE)
+	config, err := LoadConfig("main.toml")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -20,7 +20,7 @@ func TestLoadConfig(t *testing.T) {
 // with not existed config file
 func TestLoadConfigWhenFileNotFound(t *testing.T) {
 	var err error
-	_, err = LoadConfig("config/main.toml")
+	_, err = LoadConfig("main.toml")
 	if err != nil {
 		t.Fatal(err)
 	}

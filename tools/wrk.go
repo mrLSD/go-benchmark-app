@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"github.com/mrlsd/go-benchmark-app/config"
+	"regexp"
 )
 
 // WrkResults - results for Wrk benchmarks
@@ -52,7 +53,24 @@ func (wrk WrkResults) Params() []string {
 	return wrk.params
 }
 
-// Analize - for Wrk parsed results
-func (wrk WrkResults) Analize() {
-	// pass
+// Analyze - for Wrk parsed results
+func (wrk WrkResults) Analyze(data []byte) {
+	var LatencyStats = regexp.MustCompile(`Latency[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
+	var recSecStats = regexp.MustCompile(`Req\/Sec[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
+	var latencyDistribution99pers = regexp.MustCompile(`99%[\s]+([\w\.]+)`)
+	var reqSec = regexp.MustCompile(`Requests\/sec:[\s]+([\w\.]+)`)
+	_ = LatencyStats
+	_ = recSecStats
+	_ = latencyDistribution99pers
+	_ = reqSec
+	/*
+	res := LatencyStats.FindSubmatch(data)
+	fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+	res = recSecStats.FindSubmatch(data)
+	fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+	res = latencyDistribution99pers.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+	res = reqSec.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+	*/
 }

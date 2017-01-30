@@ -15,7 +15,7 @@ func main() {
 		LogFatal(err)
 	}
 	fmt.Printf("%s\nversion: %s\n", config.Title, config.Version)
-	if err := RunBanchmarks(config); err != nil {
+	if err := RunBenchmarks(config); err != nil {
 		LogFatal(err)
 	}
 }

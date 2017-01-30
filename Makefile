@@ -22,7 +22,7 @@ fmt:
 	@gofmt -w -l -s .
 
 cover:
-	@go test ./tools -v -covermode=count -coverprofile=c.out && go tool cover -html=c.out && unlink c.out
+	@go test . -v -covermode=count -coverprofile=c.out && go tool cover -html=c.out && unlink c.out
 
 coverprofiles:
 	@rm -rf *.coverprofile

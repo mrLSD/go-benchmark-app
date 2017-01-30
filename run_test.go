@@ -20,8 +20,8 @@ var runCommandFailed = func(c string, args ...string) ([]byte, error) {
 	return []byte("test"), fmt.Errorf("test %s", "test")
 }
 
-// TestRunBanchmarks - with basic cinfig
-func TestRunBanchmarks(t *testing.T) {
+// TestRunBenchmarks - with basic cinfig
+func TestRunBenchmarks(t *testing.T) {
 	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
@@ -34,7 +34,7 @@ func TestRunBanchmarks(t *testing.T) {
 	config.WaitToRun = 0
 	config.Delay = 0
 
-	err = RunBanchmarks(config)
+	err = RunBenchmarks(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -43,9 +43,9 @@ func TestRunBanchmarks(t *testing.T) {
 	}
 }
 
-// TestRunBanchmarksWithWrongAppPath - test with basic config
+// TestRunBenchmarksWithWrongAppPath - test with basic config
 // and wrong App Path
-func TestRunBanchmarksWithWrongAppPath(t *testing.T) {
+func TestRunBenchmarksWithWrongAppPath(t *testing.T) {
 	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
@@ -59,21 +59,21 @@ func TestRunBanchmarksWithWrongAppPath(t *testing.T) {
 	} else {
 		t.Fatal("You should have at least one App")
 	}
-	err = RunBanchmarks(config)
+	err = RunBenchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec start result")
 	}
 }
 
-// TestRunBanchmarksWithWrongParams - with basic config
+// TestRunBenchmarksWithWrongParams - with basic config
 // but some wrong params
-func TestRunBanchmarksWithWrongParams(t *testing.T) {
+func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// All parametres correct
+	// All parameters correct
 	config.Ab.Requests = 1
 	config.Ab.Concurency = 1
 	config.Wrk.Threads = 1
@@ -93,7 +93,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 
 	// Success benchmarks
 	RunCommand = runCommandSuccess
-	err = RunBanchmarks(config)
+	err = RunBenchmarks(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -103,7 +103,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 
 	// Failed benchmarks
 	RunCommand = runCommandFailed
-	err = RunBanchmarks(config)
+	err = RunBenchmarks(config)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -117,7 +117,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 	// Wrong AB Concurency parameter
 	abConfig := *config
 	abConfig.Ab.Concurency = 0
-	err = RunBanchmarks(&abConfig)
+	err = RunBenchmarks(&abConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -128,7 +128,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 	// Wrong WRK Connections parameter
 	wrkConfig := *config
 	wrkConfig.Wrk.Connections = 0
-	err = RunBanchmarks(&wrkConfig)
+	err = RunBenchmarks(&wrkConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -139,7 +139,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 	// Wrong Siege Concurrent parameter
 	siegeConfig := *config
 	siegeConfig.Siege.Concurrent = 0
-	err = RunBanchmarks(&siegeConfig)
+	err = RunBenchmarks(&siegeConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -152,7 +152,7 @@ func TestRunBanchmarksWithWrongParams(t *testing.T) {
 		return fmt.Errorf("test %s", "test")
 	}
 
-	err = RunBanchmarks(config)
+	err = RunBenchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec for KillProcess")
 	}

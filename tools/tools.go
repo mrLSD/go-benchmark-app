@@ -4,7 +4,7 @@ package tools
 type Results interface {
 	Command() string
 	Params() []string
-	Analize()
+	Analyze(data []byte)
 }
 
 // commandResults - results for Tool command generation

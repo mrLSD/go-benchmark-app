@@ -11,7 +11,7 @@ Configurations provided via TOML-config.
 
 Our main aims - compare different web-applications 
 that we want to compare with same benchmarks tools, 
-same parametres, repeated and distributed in time.
+same parameters, repeated and distributed in time.
 Get average results and compare it with other applications.
 
 This will allow us to analyze and compare the performance 

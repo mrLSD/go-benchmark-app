@@ -62,5 +62,6 @@ func TestWrkCommonResults(t *testing.T) {
 	}
 	_ = result.Command()
 	_ = result.Params()
-	result.Analize()
+	data := []byte("")
+	result.Analyze(data)
 }

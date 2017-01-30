@@ -45,7 +45,7 @@ func (s SiegeResults) Params() []string {
 	return s.params
 }
 
-// Analize - for Siege parsed results
-func (s SiegeResults) Analize() {
+// Analyze - for Siege parsed results
+func (s SiegeResults) Analyze(data []byte) {
 	// pass
 }

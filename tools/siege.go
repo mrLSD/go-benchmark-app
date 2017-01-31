@@ -9,7 +9,11 @@ import (
 // SiegeResults - results for Siege benchmarks
 type SiegeResults struct {
 	commandResults
-	FailedRequests []int
+	Transactions       []int
+	Availability       []float32
+	TransactionRate    []float32
+	Concurrency        []float32
+	LongestTransaction []float32
 }
 
 // SiegeTool - benchmark tool
@@ -60,18 +64,20 @@ func (s SiegeResults) Analyze(data []byte) {
 	_ = transactionRate
 	_ = concurrency
 	_ = longestTransaction
-	res := transactions.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
+	/*
+		res := transactions.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
 
-	res = availability.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
+		res = availability.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
 
-	res = transactionRate.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
+		res = transactionRate.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
 
-	res = concurrency.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
+		res = concurrency.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
 
-	res = longestTransaction.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
+		res = longestTransaction.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
+	*/
 }

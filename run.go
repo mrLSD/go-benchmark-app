@@ -72,8 +72,8 @@ func killProcess(cmd *exec.Cmd) error {
 	return cmd.Process.Kill()
 }
 
-// killProcess - execute command and
-// returns its standard output
+// runCommand - execute command and
+// returns its  output
 func runCommand(command string, args ...string) ([]byte, error) {
-	return exec.Command(command, args...).Output()
+	return exec.Command(command, args...).CombinedOutput()
 }

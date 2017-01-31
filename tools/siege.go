@@ -49,14 +49,13 @@ func (s SiegeResults) Params() []string {
 
 // Analyze - for Siege parsed results
 func (s SiegeResults) Analyze(data []byte) {
-	var transactions = regexp.MustCompile(`TransactionsЖ[\s]+([\w\.]+)`)
-	var availability = regexp.MustCompile(`Availability:[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
+	var transactions = regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
+	var availability = regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)
 
 	_ = transactions
 	_ = availability
-	println(string(data))
 	res := transactions.FindSubmatch(data)
 	fmt.Printf("\t%v\n", string(res[1]))
-	//res = availability.FindSubmatch(data)
-	//fmt.Printf("\t%v\n", string(res[1]))
+	res = availability.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
 }

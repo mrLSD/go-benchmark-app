@@ -51,11 +51,27 @@ func (s SiegeResults) Params() []string {
 func (s SiegeResults) Analyze(data []byte) {
 	var transactions = regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
 	var availability = regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)
+	var transactionRate = regexp.MustCompile(`Transaction.rate:[\s]+([\d\.]+)`)
+	var concurrency = regexp.MustCompile(`Concurrency:[\s]+([\d\.]+)`)
+	var longestTransaction = regexp.MustCompile(`Longest.transaction:[\s]+([\d\.]+)`)
 
 	_ = transactions
 	_ = availability
+	_ = transactionRate
+	_ = concurrency
+	_ = longestTransaction
 	res := transactions.FindSubmatch(data)
 	fmt.Printf("\t%v\n", string(res[1]))
+
 	res = availability.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+
+	res = transactionRate.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+
+	res = concurrency.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+
+	res = longestTransaction.FindSubmatch(data)
 	fmt.Printf("\t%v\n", string(res[1]))
 }

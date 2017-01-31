@@ -52,6 +52,9 @@ func RunBenchmarks(config *config.Config) error {
 					return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}
 
+				fmt.Printf("\t\t%#v\n", err)
+				fmt.Printf("\t\t%#v\n", results.Params())
+
 				results.Analyze(output)
 				time.Sleep(config.Delay * time.Second)
 			}

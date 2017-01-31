@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"github.com/mrlsd/go-benchmark-app/config"
+	"regexp"
 )
 
 // SiegeResults - results for Siege benchmarks
@@ -30,6 +31,7 @@ func (s SiegeTool) BenchCommand(url string) (Results, error) {
 	} else {
 		return results, fmt.Errorf("Siege time = %d, should be great then 0", s.Time)
 	}
+	params = append(params, url)
 	results.command = config.SIEGE_BENCH
 	results.params = params
 	return results, nil
@@ -47,5 +49,14 @@ func (s SiegeResults) Params() []string {
 
 // Analyze - for Siege parsed results
 func (s SiegeResults) Analyze(data []byte) {
-	// pass
+	var transactions = regexp.MustCompile(`TransactionsЖ[\s]+([\w\.]+)`)
+	var availability = regexp.MustCompile(`Availability:[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
+
+	_ = transactions
+	_ = availability
+	println(string(data))
+	res := transactions.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+	//res = availability.FindSubmatch(data)
+	//fmt.Printf("\t%v\n", string(res[1]))
 }

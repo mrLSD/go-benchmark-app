@@ -64,13 +64,13 @@ func (wrk WrkResults) Analyze(data []byte) {
 	_ = latencyDistribution99pers
 	_ = reqSec
 	/*
-	res := LatencyStats.FindSubmatch(data)
-	fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
-	res = recSecStats.FindSubmatch(data)
-	fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
-	res = latencyDistribution99pers.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
-	res = reqSec.FindSubmatch(data)
-	fmt.Printf("\t%v\n", string(res[1]))
+		res := LatencyStats.FindSubmatch(data)
+		fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+		res = recSecStats.FindSubmatch(data)
+		fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+		res = latencyDistribution99pers.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
+		res = reqSec.FindSubmatch(data)
+		fmt.Printf("\t%v\n", string(res[1]))
 	*/
 }

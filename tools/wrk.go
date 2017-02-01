@@ -10,6 +10,22 @@ import (
 type WrkResults struct {
 	commandResults
 	FailedRequests []int
+	LatencyStats   []struct {
+		Avg, Stdev, Max struct {
+			Time float32
+			// ms, us atc...
+			Quantor string
+		}
+	}
+	RecSecStats []struct {
+		Avg, Stdev, Max struct {
+			Transfer float32
+			// k, m atc...
+			Quantor string
+		}
+	}
+	//LatencyDistribution99pers
+	//ReqSec
 }
 
 // WrkTool - benchmark tool
@@ -59,18 +75,34 @@ func (wrk WrkResults) Analyze(data []byte) {
 	var recSecStats = regexp.MustCompile(`Req\/Sec[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
 	var latencyDistribution99pers = regexp.MustCompile(`99%[\s]+([\w\.]+)`)
 	var reqSec = regexp.MustCompile(`Requests\/sec:[\s]+([\w\.]+)`)
+	var requests = regexp.MustCompile(`[\s]+([\w\.]+)[\s]+requests`)
+	var failedRequests = regexp.MustCompile(`Non\-2xx[\w\s]+responses:[\s]+([\w\.]+)`)
 	_ = LatencyStats
 	_ = recSecStats
 	_ = latencyDistribution99pers
 	_ = reqSec
-	/*
-		res := LatencyStats.FindSubmatch(data)
-		fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
-		res = recSecStats.FindSubmatch(data)
-		fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
-		res = latencyDistribution99pers.FindSubmatch(data)
+	_ = requests
+	_ = failedRequests
+
+	res := LatencyStats.FindSubmatch(data)
+	fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+
+	res = recSecStats.FindSubmatch(data)
+	fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+
+	res = latencyDistribution99pers.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+
+	res = reqSec.FindSubmatch(data)
+	fmt.Printf("\t%v\n", string(res[1]))
+
+	res = requests.FindSubmatch(data)
+	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
-		res = reqSec.FindSubmatch(data)
+	}
+
+	res = failedRequests.FindSubmatch(data)
+	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
-	*/
+	}
 }

@@ -39,7 +39,7 @@ func RunBenchmarks(config *config.Config) error {
 			time.Sleep(config.WaitToRun * time.Second)
 
 			for j := 0; j < len(benchmarkTools); j++ {
-				results, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/")
+				results, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/test")
 				if err != nil {
 					return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}

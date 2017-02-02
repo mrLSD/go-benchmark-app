@@ -82,7 +82,7 @@ func (ab AbResults) Analyze(data []byte) {
 		fmt.Printf("\t%v\n", string(res[1]))
 	}
 
-	fmt.Printf("\t%v\n", string(res[1]))
+	res = timePerRequest.FindSubmatch(data)
 	if len(res) > 2 {
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
 	}

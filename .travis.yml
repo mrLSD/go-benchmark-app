@@ -16,9 +16,8 @@ before_install:
 script:
   - go build
   - diff -u <(echo -n) <(gofmt -d .)
-  - go vet $(go list ./... | grep -v /vendor/)
+  - go vet $(go list ./... | grep -v vendor)
   - make coverprofiles
-
 
 after_success:
   - gocovmerge *.coverprofile > merged.coverprofile

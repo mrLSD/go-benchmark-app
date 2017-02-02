@@ -17,3 +17,13 @@ type commandResults struct {
 type BenchCommand interface {
 	BenchCommand(url string) (Results, error)
 }
+
+// BenchResults - complex results of benchamarks tools
+type BenchResults struct {
+	ab    AbResults
+	wrk   WrkResults
+	siege SiegeResults
+}
+
+// AggreatedResults - aggregated results
+type AggreatedResults [][]BenchResults

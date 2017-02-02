@@ -18,6 +18,13 @@ var RunCommand = runCommand
 
 // RunBenchmarks - run all benchmarks
 func RunBenchmarks(config *config.Config) error {
+	// Init results array
+	var result tools.AggreatedResults
+	result = make(tools.AggreatedResults, len(config.App))
+	for i := 0; i < len(config.App); i++ {
+		result[i] = make([]tools.BenchResults, config.Try)
+	}
+
 	// Collect bench-tools to array
 	benchmarkTools := []struct {
 		tool tools.BenchCommand

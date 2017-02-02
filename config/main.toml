@@ -29,7 +29,7 @@ time = 10
 # Applications parametres
 [[app]]
 title = "Iron pure & minimal"
-path = "/home/evgeny/rs/iron/target/release/iron"
+path = "/home/evgeny/rs/iron/target/release/iron1"
 
 [[app]]
 title = "Nickel pure & minimal"

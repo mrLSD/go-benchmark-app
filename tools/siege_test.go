@@ -5,6 +5,22 @@ import (
 	"testing"
 )
 
+const SIEGE_RESULT = `
+Transactions:		      146229 hits
+Availability:		       99.63 %
+Elapsed time:		        9.11 secs
+Data transferred:	        2.65 MB
+Response time:		        0.01 secs
+Transaction rate:	    16051.48 trans/sec
+Throughput:		        0.29 MB/sec
+Concurrency:		       91.92
+Successful transactions:           0
+Failed transactions:	         546
+Longest transaction:	        0.31
+Shortest transaction:	        0.00
+
+`
+
 // TestSiegeBenchCommand - test Siege command generator
 func TestSiegeBenchCommand(t *testing.T) {
 	var tool SiegeTool
@@ -50,5 +66,7 @@ func TestSiegeCommonResults(t *testing.T) {
 	_ = result.Command()
 	_ = result.Params()
 	data := []byte("")
+	result.Analyze(data)
+	data = []byte(SIEGE_RESULT)
 	result.Analyze(data)
 }

@@ -5,6 +5,23 @@ import (
 	"testing"
 )
 
+const WRK_RESULT = `
+Running 10s test @ http://localhost:3000/123
+  100 threads and 5000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   443.73us  701.77us  24.24ms   93.93%
+    Req/Sec    29.50k     3.64k   41.13k    73.04%
+  Latency Distribution
+     50%  269.00us
+     75%  483.00us
+     90%    0.86ms
+     99%    4.21ms
+  599207 requests in 10.10s, 73.15MB read
+  Non-2xx or 3xx responses: 599207
+Requests/sec:  59353.58
+Transfer/sec:      7.25MB
+`
+
 // TestWrkBenchCommand - test WRK command generator
 func TestWrkBenchCommand(t *testing.T) {
 	var tool WrkTool
@@ -63,5 +80,7 @@ func TestWrkCommonResults(t *testing.T) {
 	_ = result.Command()
 	_ = result.Params()
 	data := []byte("")
+	result.Analyze(data)
+	data = []byte(WRK_RESULT)
 	result.Analyze(data)
 }

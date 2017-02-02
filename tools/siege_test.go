@@ -66,7 +66,7 @@ func TestSiegeCommonResults(t *testing.T) {
 	_ = result.Command()
 	_ = result.Params()
 	data := []byte("")
-	result.Analyze(data)
+	result.Parse(data)
 	data = []byte(SIEGE_RESULT)
-	result.Analyze(data)
+	result.Parse(data)
 }

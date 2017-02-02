@@ -62,7 +62,7 @@ func RunBenchmarks(config *config.Config) error {
 				fmt.Printf("\t\t%#v\n", err)
 				fmt.Printf("\t\t%#v\n", results.Params())
 
-				results.Analyze(output)
+				results.Parse(output)
 				time.Sleep(config.Delay * time.Second)
 			}
 

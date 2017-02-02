@@ -73,8 +73,8 @@ func (wrk WrkResults) Params() []string {
 	return wrk.params
 }
 
-// Analyze - for Wrk parsed results
-func (wrk WrkResults) Analyze(data []byte) {
+// Parse - for Wrk parsed results
+func (wrk WrkResults) Parse(data []byte) {
 	var LatencyStats = regexp.MustCompile(`Latency[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
 	var recSecStats = regexp.MustCompile(`Req\/Sec[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
 	var latencyDistribution99pers = regexp.MustCompile(`99%[\s]+([\w\.]+)`)

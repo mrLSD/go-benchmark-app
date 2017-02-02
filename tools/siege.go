@@ -51,8 +51,8 @@ func (s SiegeResults) Params() []string {
 	return s.params
 }
 
-// Analyze - for Siege parsed results
-func (s SiegeResults) Analyze(data []byte) {
+// Parse - for Siege parsed results
+func (s SiegeResults) Parse(data []byte) {
 	var transactions = regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
 	var availability = regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)
 	var transactionRate = regexp.MustCompile(`Transaction.rate:[\s]+([\d\.]+)`)

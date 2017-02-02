@@ -60,8 +60,8 @@ func (ab AbResults) Params() []string {
 	return ab.params
 }
 
-// Analyze - for AB parsed results
-func (ab AbResults) Analyze(data []byte) {
+// Parse - for AB parsed results
+func (ab AbResults) Parse(data []byte) {
 	var failedRequests = regexp.MustCompile(`Failed.requests:[\s]+([\d]+)`)
 	var requestsPerSecond = regexp.MustCompile(`Requests.per.second:[\s]+([\d\.]+).\[`)
 	var timePerRequest = regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\)`)

@@ -109,7 +109,7 @@ func TestAbCommonResults(t *testing.T) {
 	_ = result.Command()
 	_ = result.Params()
 	data := []byte("")
-	result.Analyze(data)
+	result.Parse(data)
 	data = []byte(AB_RESULT)
-	result.Analyze(data)
+	result.Parse(data)
 }

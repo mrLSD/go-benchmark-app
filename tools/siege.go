@@ -64,20 +64,29 @@ func (s SiegeResults) Analyze(data []byte) {
 	_ = transactionRate
 	_ = concurrency
 	_ = longestTransaction
-	/*
-		res := transactions.FindSubmatch(data)
-		fmt.Printf("\t%v\n", string(res[1]))
 
-		res = availability.FindSubmatch(data)
+	res := transactions.FindSubmatch(data)
+	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
+	}
 
-		res = transactionRate.FindSubmatch(data)
+	res = availability.FindSubmatch(data)
+	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
+	}
 
-		res = concurrency.FindSubmatch(data)
+	res = transactionRate.FindSubmatch(data)
+	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
+	}
 
-		res = longestTransaction.FindSubmatch(data)
+	res = concurrency.FindSubmatch(data)
+	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
-	*/
+	}
+
+	res = longestTransaction.FindSubmatch(data)
+	if len(res) > 1 {
+		fmt.Printf("\t%v\n", string(res[1]))
+	}
 }

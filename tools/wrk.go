@@ -24,8 +24,12 @@ type WrkResults struct {
 			Quantor string
 		}
 	}
-	//LatencyDistribution99pers
-	//ReqSec
+	LatencyDistribution99pers struct {
+		Time float32
+		// ms, us atc...
+		Quantor string
+	}
+	ReqSec []float32
 }
 
 // WrkTool - benchmark tool

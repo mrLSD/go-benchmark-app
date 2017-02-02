@@ -72,23 +72,28 @@ func (ab AbResults) Analyze(data []byte) {
 	_ = timePerRequest
 	_ = timePerRequestAll
 	_ = transferRate
-	/*
-		res := failedRequests.FindSubmatch(output)[1]
-		fmt.Printf("\t%v\n", string(res))
+	res := failedRequests.FindSubmatch(data)
+	if len(res) > 1 {
+		fmt.Printf("\t%v\n", string(res[1]))
+	}
 
-		res1 := requestsPerSecond.FindSubmatch(output)[1]
-		fmt.Printf("\t%v\n", string(res1))
+	res = requestsPerSecond.FindSubmatch(data)
+	if len(res) > 1 {
+		fmt.Printf("\t%v\n", string(res[1]))
+	}
 
-		res1 = timePerRequest.FindSubmatch(output)[1]
-		res2 := timePerRequest.FindSubmatch(output)[2]
-		fmt.Printf("\t%v\t%v\n", string(res1), string(res2))
+	fmt.Printf("\t%v\n", string(res[1]))
+	if len(res) > 2 {
+		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	}
 
-		res1 = timePerRequestAll.FindSubmatch(output)[1]
-		res2 = timePerRequestAll.FindSubmatch(output)[2]
-		fmt.Printf("\t%v\t%v\n", string(res1), string(res2))
+	res = timePerRequestAll.FindSubmatch(data)
+	if len(res) > 2 {
+		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	}
 
-		res1 = transferRate.FindSubmatch(output)[1]
-		res2 = transferRate.FindSubmatch(output)[2]
-		fmt.Printf("\t%v\t%v\n", string(res1), string(res2))
-	*/
+	res = transferRate.FindSubmatch(data)
+	if len(res) > 2 {
+		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	}
 }

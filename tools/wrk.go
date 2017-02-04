@@ -80,12 +80,12 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 	var result WrkResults
 	var err error = nil
 
-	var latencyStats = regexp.MustCompile(`Latency[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
-	var recSecStats = regexp.MustCompile(`Req\/Sec[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
-	var latencyDistribution99pers = regexp.MustCompile(`99%[\s]+([\d\.]+)([\w]+)`)
-	var reqSec = regexp.MustCompile(`Requests\/sec:[\s]+([\w\.]+)`)
-	var requests = regexp.MustCompile(`[\s]+([\w\.]+)[\s]+requests`)
-	var failedRequests = regexp.MustCompile(`Non\-2xx[\w\s]+responses:[\s]+([\w\.]+)`)
+	latencyStats := regexp.MustCompile(`Latency[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
+	recSecStats := regexp.MustCompile(`Req\/Sec[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
+	latencyDistribution99pers := regexp.MustCompile(`99%[\s]+([\d\.]+)([\w]+)`)
+	reqSec := regexp.MustCompile(`Requests\/sec:[\s]+([\w\.]+)`)
+	requests := regexp.MustCompile(`[\s]+([\w\.]+)[\s]+requests`)
+	failedRequests := regexp.MustCompile(`Non\-2xx[\w\s]+responses:[\s]+([\w\.]+)`)
 
 	res := latencyStats.FindSubmatch(data)
 	if len(res) > 6 {

@@ -66,11 +66,11 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 	var result AbResults
 	var err error = nil
 
-	var failedRequests = regexp.MustCompile(`Failed.requests:[\s]+([\d]+)`)
-	var requestsPerSecond = regexp.MustCompile(`Requests.per.second:[\s]+([\d\.]+).\[`)
-	var timePerRequest = regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\)`)
-	var timePerRequestAll = regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\,`)
-	var transferRate = regexp.MustCompile(`Transfer.rate:[\s]+([\d\.]+).\[(.+)\/.*received`)
+	failedRequests := regexp.MustCompile(`Failed.requests:[\s]+([\d]+)`)
+	requestsPerSecond := regexp.MustCompile(`Requests.per.second:[\s]+([\d\.]+).\[`)
+	timePerRequest := regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\)`)
+	timePerRequestAll := regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\,`)
+	transferRate := regexp.MustCompile(`Transfer.rate:[\s]+([\d\.]+).\[(.+)\/.*received`)
 
 	res := failedRequests.FindSubmatch(data)
 	if len(res) > 1 {

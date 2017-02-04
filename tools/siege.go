@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"github.com/mrlsd/go-benchmark-app/config"
 	"regexp"
+	"strconv"
 )
 
 // SiegeResults - results for Siege benchmarks
 type SiegeResults struct {
 	commandResults
-	Transactions       []int
-	Availability       []float32
-	TransactionRate    []float32
-	Concurrency        []float32
-	LongestTransaction []float32
+	Transactions       int
+	Availability       float64
+	TransactionRate    float64
+	Concurrency        float64
+	LongestTransaction float64
 }
 
 // SiegeTool - benchmark tool
@@ -53,44 +54,69 @@ func (s SiegeResults) Params() []string {
 
 // Parse - for Siege parsed results
 func (s SiegeResults) Parse(data []byte) (Results, error) {
-	var result AbResults
+	var result SiegeResults
+	var err error = nil
 
-	var transactions = regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
-	var availability = regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)
-	var transactionRate = regexp.MustCompile(`Transaction.rate:[\s]+([\d\.]+)`)
-	var concurrency = regexp.MustCompile(`Concurrency:[\s]+([\d\.]+)`)
-	var longestTransaction = regexp.MustCompile(`Longest.transaction:[\s]+([\d\.]+)`)
-
-	_ = transactions
-	_ = availability
-	_ = transactionRate
-	_ = concurrency
-	_ = longestTransaction
+	transactions := regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
+	availability := regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)
+	transactionRate := regexp.MustCompile(`Transaction.rate:[\s]+([\d\.]+)`)
+	concurrency := regexp.MustCompile(`Concurrency:[\s]+([\d\.]+)`)
+	longestTransaction := regexp.MustCompile(`Longest.transaction:[\s]+([\d\.]+)`)
 
 	res := transactions.FindSubmatch(data)
 	if len(res) > 1 {
+		result.Transactions, err = strconv.Atoi(string(res[1]))
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = availability.FindSubmatch(data)
 	if len(res) > 1 {
+		result.Availability, err = strconv.ParseFloat(string(res[1]), 32)
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = transactionRate.FindSubmatch(data)
 	if len(res) > 1 {
+		result.TransactionRate, err = strconv.ParseFloat(string(res[1]), 32)
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = concurrency.FindSubmatch(data)
 	if len(res) > 1 {
+		result.Concurrency, err = strconv.ParseFloat(string(res[1]), 32)
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = longestTransaction.FindSubmatch(data)
 	if len(res) > 1 {
+		result.LongestTransaction, err = strconv.ParseFloat(string(res[1]), 32)
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
-	return result, nil
+	return result, err
 }

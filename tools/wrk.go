@@ -74,7 +74,7 @@ func (wrk WrkResults) Params() []string {
 }
 
 // Parse - for Wrk parsed results
-func (wrk WrkResults) Parse(data []byte)  (Results, error) {
+func (wrk WrkResults) Parse(data []byte) (Results, error) {
 	var result AbResults
 
 	var LatencyStats = regexp.MustCompile(`Latency[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)

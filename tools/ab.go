@@ -71,52 +71,63 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 	var timePerRequest = regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\)`)
 	var timePerRequestAll = regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\,`)
 	var transferRate = regexp.MustCompile(`Transfer.rate:[\s]+([\d\.]+).\[(.+)\/.*received`)
-	_ = failedRequests
-	_ = requestsPerSecond
-	_ = timePerRequest
-	_ = timePerRequestAll
-	_ = transferRate
+
 	res := failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
 		result.FailedRequests, err = strconv.Atoi(string(res[1]))
 		if err != nil {
-			return result, err
+			err = fmt.Errorf("\n\t%v", err)
 		}
 		fmt.Printf("\t%v\n", string(res[1]))
 	} else {
-		return result, fmt.Errorf("Parse error %v", res)
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = requestsPerSecond.FindSubmatch(data)
 	if len(res) > 1 {
 		result.RequestsPerSecond, err = strconv.ParseFloat(string(res[1]), 32)
 		if err != nil {
-			return result, err
+			err = fmt.Errorf("\n\t%v", err)
 		}
 		fmt.Printf("\t%v\n", string(res[1]))
 	} else {
-		return result, fmt.Errorf("Parse error %v", res)
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = timePerRequest.FindSubmatch(data)
 	if len(res) > 2 {
+		result.TimePerRequest.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.TimePerRequest.Quantor = string(res[2])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
 	} else {
-		return result, fmt.Errorf("Parse error %v", res)
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = timePerRequestAll.FindSubmatch(data)
 	if len(res) > 2 {
+		result.TimePerRequestAll.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.TimePerRequestAll.Quantor = string(res[2])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
 	} else {
-		return result, fmt.Errorf("Parse error %v", res)
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = transferRate.FindSubmatch(data)
 	if len(res) > 2 {
+		result.TransferRate.Transfer, err = strconv.ParseFloat(string(res[1]), 32)
+		result.TransferRate.Rate = string(res[2])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
 	} else {
-		return result, fmt.Errorf("Parse error %v", res)
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	return result, err

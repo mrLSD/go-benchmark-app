@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"github.com/mrlsd/go-benchmark-app/config"
 	"regexp"
+	"strconv"
 )
 
 // AbResults - results for AB benchmarks
 type AbResults struct {
 	commandResults
-	FailedRequests    []int
-	RequestsPerSecond []float32
-	TransferRate      []struct {
-		Transfer float32
+	FailedRequests    int
+	RequestsPerSecond float64
+	TransferRate      struct {
+		Transfer float64
 		// Kbyte/sec atc...
 		Rate string
 	}
-	TtimePerRequest, TimePerRequestAll []struct {
+	TimePerRequest, TimePerRequestAll struct {
 		// Time per Request
-		Time float32
+		Time float64
 		// Quantor - sec, min, hour
 		Quantor string
 	}
@@ -61,7 +62,10 @@ func (ab AbResults) Params() []string {
 }
 
 // Parse - for AB parsed results
-func (ab AbResults) Parse(data []byte) {
+func (ab AbResults) Parse(data []byte) (Results, error) {
+	var result AbResults
+	var err error = nil
+
 	var failedRequests = regexp.MustCompile(`Failed.requests:[\s]+([\d]+)`)
 	var requestsPerSecond = regexp.MustCompile(`Requests.per.second:[\s]+([\d\.]+).\[`)
 	var timePerRequest = regexp.MustCompile(`Time.per.request:[\s]+([\d\.]+).\[([a-z]+)\].\(mean\)`)
@@ -74,26 +78,46 @@ func (ab AbResults) Parse(data []byte) {
 	_ = transferRate
 	res := failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
+		result.FailedRequests, err = strconv.Atoi(string(res[1]))
+		if err != nil {
+			return result, err
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		return result, fmt.Errorf("Parse error %v", res)
 	}
 
 	res = requestsPerSecond.FindSubmatch(data)
 	if len(res) > 1 {
+		result.RequestsPerSecond, err = strconv.ParseFloat(string(res[1]), 32)
+		if err != nil {
+			return result, err
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		return result, fmt.Errorf("Parse error %v", res)
 	}
 
 	res = timePerRequest.FindSubmatch(data)
 	if len(res) > 2 {
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	} else {
+		return result, fmt.Errorf("Parse error %v", res)
 	}
 
 	res = timePerRequestAll.FindSubmatch(data)
 	if len(res) > 2 {
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	} else {
+		return result, fmt.Errorf("Parse error %v", res)
 	}
 
 	res = transferRate.FindSubmatch(data)
 	if len(res) > 2 {
 		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	} else {
+		return result, fmt.Errorf("Parse error %v", res)
 	}
+
+	return result, err
 }

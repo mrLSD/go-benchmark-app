@@ -52,7 +52,9 @@ func (s SiegeResults) Params() []string {
 }
 
 // Parse - for Siege parsed results
-func (s SiegeResults) Parse(data []byte) {
+func (s SiegeResults) Parse(data []byte) (Results, error) {
+	var result AbResults
+
 	var transactions = regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
 	var availability = regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)
 	var transactionRate = regexp.MustCompile(`Transaction.rate:[\s]+([\d\.]+)`)
@@ -89,4 +91,6 @@ func (s SiegeResults) Parse(data []byte) {
 	if len(res) > 1 {
 		fmt.Printf("\t%v\n", string(res[1]))
 	}
+
+	return result, nil
 }

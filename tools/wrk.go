@@ -4,32 +4,34 @@ import (
 	"fmt"
 	"github.com/mrlsd/go-benchmark-app/config"
 	"regexp"
+	"strconv"
 )
 
 // WrkResults - results for Wrk benchmarks
 type WrkResults struct {
 	commandResults
-	FailedRequests []int
-	LatencyStats   []struct {
+	FailedRequests int
+	ReqSec         float64
+	Requests       int
+	LatencyStats   struct {
 		Avg, Stdev, Max struct {
-			Time float32
+			Time float64
 			// ms, us atc...
 			Quantor string
 		}
 	}
-	RecSecStats []struct {
+	RecSecStats struct {
 		Avg, Stdev, Max struct {
-			Transfer float32
+			Transfer float64
 			// k, m atc...
 			Quantor string
 		}
 	}
 	LatencyDistribution99pers struct {
-		Time float32
+		Time float64
 		// ms, us atc...
 		Quantor string
 	}
-	ReqSec []float32
 }
 
 // WrkTool - benchmark tool
@@ -75,50 +77,115 @@ func (wrk WrkResults) Params() []string {
 
 // Parse - for Wrk parsed results
 func (wrk WrkResults) Parse(data []byte) (Results, error) {
-	var result AbResults
+	var result WrkResults
+	var err error = nil
 
-	var LatencyStats = regexp.MustCompile(`Latency[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
-	var recSecStats = regexp.MustCompile(`Req\/Sec[\s]+([\w\.]+)[\s]+([\w\.]+)[\s]+([\w\.]+)`)
-	var latencyDistribution99pers = regexp.MustCompile(`99%[\s]+([\w\.]+)`)
+	var latencyStats = regexp.MustCompile(`Latency[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
+	var recSecStats = regexp.MustCompile(`Req\/Sec[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
+	var latencyDistribution99pers = regexp.MustCompile(`99%[\s]+([\d\.]+)([\w]+)`)
 	var reqSec = regexp.MustCompile(`Requests\/sec:[\s]+([\w\.]+)`)
 	var requests = regexp.MustCompile(`[\s]+([\w\.]+)[\s]+requests`)
 	var failedRequests = regexp.MustCompile(`Non\-2xx[\w\s]+responses:[\s]+([\w\.]+)`)
-	_ = LatencyStats
-	_ = recSecStats
-	_ = latencyDistribution99pers
-	_ = reqSec
-	_ = requests
-	_ = failedRequests
 
-	res := LatencyStats.FindSubmatch(data)
-	if len(res) > 3 {
-		fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+	res := latencyStats.FindSubmatch(data)
+	if len(res) > 6 {
+		result.LatencyStats.Avg.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.LatencyStats.Avg.Quantor = string(res[2])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		result.LatencyStats.Stdev.Time, err = strconv.ParseFloat(string(res[3]), 32)
+		result.LatencyStats.Stdev.Quantor = string(res[4])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		result.LatencyStats.Max.Time, err = strconv.ParseFloat(string(res[5]), 32)
+		result.LatencyStats.Max.Quantor = string(res[6])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+		fmt.Printf("\t%v\t%v\n", string(res[3]), string(res[4]))
+		fmt.Printf("\t%v\t%v\n", string(res[5]), string(res[6]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = recSecStats.FindSubmatch(data)
-	if len(res) > 3 {
-		fmt.Printf("\t%v\n\t%v\n\t%v\n", string(res[1]), string(res[2]), string(res[3]))
+	if len(res) > 6 {
+		result.RecSecStats.Avg.Transfer, err = strconv.ParseFloat(string(res[1]), 32)
+		result.RecSecStats.Avg.Quantor = string(res[2])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		result.RecSecStats.Stdev.Transfer, err = strconv.ParseFloat(string(res[3]), 32)
+		result.RecSecStats.Stdev.Quantor = string(res[4])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		result.RecSecStats.Max.Transfer, err = strconv.ParseFloat(string(res[5]), 32)
+		result.RecSecStats.Max.Quantor = string(res[6])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+		fmt.Printf("\t%v\t%v\n", string(res[3]), string(res[4]))
+		fmt.Printf("\t%v\t%v\n", string(res[5]), string(res[6]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = latencyDistribution99pers.FindSubmatch(data)
-	if len(res) > 1 {
-		fmt.Printf("\t%v\n", string(res[1]))
+	if len(res) > 2 {
+		result.LatencyDistribution99pers.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.LatencyDistribution99pers.Quantor = string(res[2])
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
+
+		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = reqSec.FindSubmatch(data)
 	if len(res) > 1 {
+		result.ReqSec, err = strconv.ParseFloat(string(res[1]), 32)
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = requests.FindSubmatch(data)
 	if len(res) > 1 {
+		result.Requests, err = strconv.Atoi(string(res[1]))
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
 
 	res = failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
+		result.FailedRequests, err = strconv.Atoi(string(res[1]))
+		if err != nil {
+			err = fmt.Errorf("\n\t%v", err)
+		}
 		fmt.Printf("\t%v\n", string(res[1]))
+	} else {
+		result.FailedRequests = 0
 	}
 
-	return result, nil
+	return result, err
 }

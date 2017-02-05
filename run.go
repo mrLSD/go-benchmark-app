@@ -38,8 +38,7 @@ func RunBenchmarks(config *config.Config) error {
 	for repeat := 0; repeat < config.Try; repeat++ {
 		//  Go through applications
 		for i := 0; i < len(config.App); i++ {
-			println("===============================")
-			fmt.Printf("%s [%d]", config.App[i].Title, repeat)
+			fmt.Printf("[%d]... %s\n", repeat+1, config.App[i].Title)
 			// Get app command and Run it
 			cmd := exec.Command(config.App[i].Path)
 			if err := cmd.Start(); err != nil {
@@ -101,15 +100,15 @@ func runCommand(command string, args ...string) ([]byte, error) {
 // aggregateResults - get Bench Resuls by it type
 func aggregateResults(data *tools.Results, benchResults *tools.BenchResults) {
 	_ = benchResults
-    switch values := (*data).(type) {
+	switch values := (*data).(type) {
 	case tools.AbResults:
 		benchResults.Ab = values
 		fmt.Println("\t=> tools.AbResults")
-    case tools.WrkResults:
+	case tools.WrkResults:
 		benchResults.Wrk = values
-        fmt.Println("\t=> tools.WrkResults")
+		fmt.Println("\t=> tools.WrkResults")
 	case tools.SiegeResults:
 		benchResults.Siege = values
-        fmt.Println("\t=> tools.SiegeResults")
+		fmt.Println("\t=> tools.SiegeResults")
 	}
 }

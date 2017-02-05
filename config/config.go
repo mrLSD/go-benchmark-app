@@ -6,9 +6,13 @@ import (
 	"time"
 )
 
+var (
+	// ConfigFile - default config file
+	ConfigFile = "config/main.toml"
+	AppVersion = "0.1"
+)
+
 const (
-	// CONFIG_FILE - default config file
-	CONFIG_FILE = "config/main.toml"
 	// AB_BENCH - ab benchmark tool
 	AB_BENCH = "/usr/bin/ab"
 	// WRK_BENCH - wrk benchmark tool
@@ -19,6 +23,7 @@ const (
 
 // Config - base config
 type Config struct {
+	Verbose   bool
 	Title     string
 	Version   string
 	Delay     time.Duration
@@ -32,6 +37,7 @@ type Config struct {
 
 // AbConfig - config for AB benchmark
 type AbConfig struct {
+	BinPath    string
 	Concurency int
 	Keepalive  bool
 	Requests   int
@@ -39,6 +45,7 @@ type AbConfig struct {
 
 // WrkConfig - config for WRK benchmark
 type WrkConfig struct {
+	BinPath     string
 	Connections int
 	Duration    int
 	Threads     int
@@ -46,6 +53,7 @@ type WrkConfig struct {
 
 // SiegeConfig - config for Siege benchmark
 type SiegeConfig struct {
+	BinPath    string
 	Concurrent int
 	Time       int
 }
@@ -59,10 +67,10 @@ type AppConfig struct {
 }
 
 // LoadConfig - load TOML config file
-func LoadConfig(file string) (*Config, error) {
-	var config Config
+func LoadConfig(file string, cliParams *Config) (*Config, error) {
+	config := cliParams
 	if _, err := toml.DecodeFile(file, &config); err != nil {
 		return &Config{}, fmt.Errorf("Failed to load config: %s\nReason: %v", file, err)
 	}
-	return &config, nil
+	return config, nil
 }

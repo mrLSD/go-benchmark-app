@@ -19,10 +19,10 @@ var RunCommand = runCommand
 // RunBenchmarks - run all benchmarks
 func RunBenchmarks(config *config.Config) error {
 	// Init results array
-	var result tools.AggreatedResults
-	result = make(tools.AggreatedResults, len(config.App))
+	var benchResults tools.AggreatedResults
+	benchResults = make(tools.AggreatedResults, len(config.App))
 	for i := 0; i < len(config.App); i++ {
-		result[i] = make([]tools.BenchResults, config.Try)
+		benchResults[i] = make([]tools.BenchResults, config.Try)
 	}
 
 	// Collect bench-tools to array
@@ -36,16 +36,21 @@ func RunBenchmarks(config *config.Config) error {
 
 	// Repeate benchmarks
 	for repeat := 0; repeat < config.Try; repeat++ {
+		//  Go through applications
 		for i := 0; i < len(config.App); i++ {
 			println("===============================")
-			println(config.App[i].Title)
+			fmt.Printf("%s [%d]", config.App[i].Title, repeat)
+			// Get app command and Run it
 			cmd := exec.Command(config.App[i].Path)
 			if err := cmd.Start(); err != nil {
 				return fmt.Errorf("Failed execute:\n\t%s\n\t%s", config.App[i].Path, err.Error())
 			}
+			// Wait when app starting
 			time.Sleep(config.WaitToRun * time.Second)
 
+			// Go through Benchmark tools
 			for j := 0; j < len(benchmarkTools); j++ {
+				// Generate bench-command
 				results, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/test")
 				if err != nil {
 					return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
@@ -62,7 +67,15 @@ func RunBenchmarks(config *config.Config) error {
 				fmt.Printf("\t\t%#v\n", err)
 				fmt.Printf("\t\t%#v\n", results.Params())
 
-				results.Parse(output)
+				// Parse bench-output
+				parsed, err := results.Parse(output)
+				if err != nil {
+					return err
+				}
+
+				// Aggregate benchmark results by:
+				// Application iterator, Repeat iterator, Bench-tool type
+				aggregateResults(&parsed, &benchResults[i][repeat])
 				time.Sleep(config.Delay * time.Second)
 			}
 
@@ -83,4 +96,20 @@ func killProcess(cmd *exec.Cmd) error {
 // returns its  output
 func runCommand(command string, args ...string) ([]byte, error) {
 	return exec.Command(command, args...).CombinedOutput()
+}
+
+// aggregateResults - get Bench Resuls by it type
+func aggregateResults(data *tools.Results, benchResults *tools.BenchResults) {
+	_ = benchResults
+    switch values := (*data).(type) {
+	case tools.AbResults:
+		benchResults.Ab = values
+		fmt.Println("\t=> tools.AbResults")
+    case tools.WrkResults:
+		benchResults.Wrk = values
+        fmt.Println("\t=> tools.WrkResults")
+	case tools.SiegeResults:
+		benchResults.Siege = values
+        fmt.Println("\t=> tools.SiegeResults")
+	}
 }

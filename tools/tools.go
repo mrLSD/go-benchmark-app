@@ -20,9 +20,9 @@ type BenchCommand interface {
 
 // BenchResults - complex results of benchamarks tools
 type BenchResults struct {
-	ab    AbResults
-	wrk   WrkResults
-	siege SiegeResults
+	Ab    AbResults
+	Wrk   WrkResults
+	Siege SiegeResults
 }
 
 // AggreatedResults - aggregated results

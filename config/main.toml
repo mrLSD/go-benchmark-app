@@ -5,9 +5,9 @@ version = "0.1"
 # Delay via try (sec)
 delay = 5
 # How much we should try
-try = 10
+try = 3
 # How long wait when application guaranteed runned (sec)
-waittorun = 1
+waittorun = 2
 
 # ab benchmarks parametres
 [ab]
@@ -35,10 +35,10 @@ path = "/home/evgeny/rs/iron/target/release/iron"
 title = "Nickel pure & minimal"
 path = "/home/evgeny/rs/nickel/target/release/nickel"
 
-[[app]]
-title = "Iron CMS"
-path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
+# [[app]]
+# title = "Iron CMS"
+# path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
 
-[[app]]
-title = "Nickel CMS"
-path = "/home/evgeny/rs/nickel-cms/target/release/nickel-cms"
+#  [[app]]
+#  title = "Nickel CMS"
+# path = "/home/evgeny/rs/nickel-cms/target/release/nickel-cms"

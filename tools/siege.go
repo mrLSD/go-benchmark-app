@@ -36,6 +36,7 @@ func (s SiegeTool) BenchCommand(url string) (Results, error) {
 	} else {
 		return results, fmt.Errorf("Siege time = %d, should be great then 0", s.Time)
 	}
+	params = append(params, "-b")
 	params = append(params, url)
 	results.command = config.SIEGE_BENCH
 	results.params = params
@@ -69,7 +70,9 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tTransactions:\t\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -80,7 +83,9 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tAvailability:\t\t%v%%\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -91,7 +96,9 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tTransaction Rate:\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -102,7 +109,9 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tConcurrency:\t\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -113,7 +122,9 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tLongest Transaction: \t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}

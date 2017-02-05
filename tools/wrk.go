@@ -193,8 +193,9 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 			err = fmt.Errorf("\n\t%v", err)
 		}
 		// Print without Verbose checking
-		fmt.Printf("\tFailed Requests:\t\t%v\n", string(res[1]))
+		fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
 	} else {
+		fmt.Printf("\tFailed Requests:\t%v\n", 0)
 		result.FailedRequests = 0
 	}
 

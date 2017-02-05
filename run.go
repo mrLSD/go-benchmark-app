@@ -5,6 +5,7 @@ import (
 	"github.com/mrlsd/go-benchmark-app/config"
 	"github.com/mrlsd/go-benchmark-app/tools"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -55,16 +56,13 @@ func RunBenchmarks(config *config.Config) error {
 					return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}
 				// Run specific bench-tool
-				fmt.Printf("Run command: %s\n", results.Command())
+				printRunBenchCommand(&results)
 				output, err := RunCommand(results.Command(), results.Params()...)
 				if err != nil {
 					KillProcess(cmd)
 					println(string(output))
 					return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}
-
-				fmt.Printf("\t\t%#v\n", err)
-				fmt.Printf("\t\t%#v\n", results.Params())
 
 				// Parse bench-output
 				parsed, err := results.Parse(output)
@@ -76,6 +74,7 @@ func RunBenchmarks(config *config.Config) error {
 				// Application iterator, Repeat iterator, Bench-tool type
 				aggregateResults(&parsed, &benchResults[i][repeat])
 				time.Sleep(config.Delay * time.Second)
+				fmt.Println("[done]")
 			}
 
 			if err := KillProcess(cmd); err != nil {
@@ -99,16 +98,22 @@ func runCommand(command string, args ...string) ([]byte, error) {
 
 // aggregateResults - get Bench Resuls by it type
 func aggregateResults(data *tools.Results, benchResults *tools.BenchResults) {
-	_ = benchResults
 	switch values := (*data).(type) {
 	case tools.AbResults:
 		benchResults.Ab = values
-		fmt.Println("\t=> tools.AbResults")
 	case tools.WrkResults:
 		benchResults.Wrk = values
-		fmt.Println("\t=> tools.WrkResults")
 	case tools.SiegeResults:
 		benchResults.Siege = values
-		fmt.Println("\t=> tools.SiegeResults")
+	}
+}
+
+// printRunBenchCommand - print running bench-commang
+func printRunBenchCommand(result *tools.Results) {
+	if config.Cfg.Verbose {
+		fmt.Printf("Run command: %s %v\n", (*result).Command(), (*result).Params())
+	} else {
+		path := strings.Split((*result).Command(), "/")
+		fmt.Printf("   Run command: %s\t", path[len(path)-1])
 	}
 }

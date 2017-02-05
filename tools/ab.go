@@ -78,7 +78,9 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -89,7 +91,9 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\trequests Per Second:\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -101,7 +105,9 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tTime Per Request:\t%v\t%v\n", string(res[1]), string(res[2]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -113,7 +119,9 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tTime Per Request [avg]:\t%v %v\n", string(res[1]), string(res[2]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -125,7 +133,9 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tTransfer Rate:\t\t%v %v\n", string(res[1]), string(res[2]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}

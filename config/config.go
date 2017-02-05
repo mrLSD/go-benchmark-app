@@ -10,6 +10,7 @@ var (
 	// ConfigFile - default config file
 	ConfigFile = "config/main.toml"
 	AppVersion = "0.1"
+	Cfg        = &Config{}
 )
 
 const (
@@ -72,5 +73,6 @@ func LoadConfig(file string, cliParams *Config) (*Config, error) {
 	if _, err := toml.DecodeFile(file, &config); err != nil {
 		return &Config{}, fmt.Errorf("Failed to load config: %s\nReason: %v", file, err)
 	}
+	Cfg = config
 	return config, nil
 }

@@ -74,7 +74,7 @@ func RunBenchmarks(config *config.Config) error {
 				// Application iterator, Repeat iterator, Bench-tool type
 				aggregateResults(&parsed, &benchResults[i][repeat])
 				time.Sleep(config.Delay * time.Second)
-				fmt.Println("[done]")
+				fmt.Println("\t[done]")
 			}
 
 			if err := KillProcess(cmd); err != nil {
@@ -114,6 +114,6 @@ func printRunBenchCommand(result *tools.Results) {
 		fmt.Printf("Run command: %s %v\n", (*result).Command(), (*result).Params())
 	} else {
 		path := strings.Split((*result).Command(), "/")
-		fmt.Printf("   Run command: %s\t", path[len(path)-1])
+		fmt.Printf("   Run command: %s", path[len(path)-1])
 	}
 }

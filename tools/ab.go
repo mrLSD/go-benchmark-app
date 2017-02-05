@@ -92,7 +92,7 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 			err = fmt.Errorf("\n\t%v", err)
 		}
 		if config.Cfg.Verbose {
-			fmt.Printf("\trequests Per Second:\t%v\n", string(res[1]))
+			fmt.Printf("\tRequests Per Second:\t%v\n", string(res[1]))
 		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)

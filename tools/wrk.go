@@ -107,9 +107,11 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 			err = fmt.Errorf("\n\t%v", err)
 		}
 
-		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
-		fmt.Printf("\t%v\t%v\n", string(res[3]), string(res[4]))
-		fmt.Printf("\t%v\t%v\n", string(res[5]), string(res[6]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tLatency Stats Avg:\t%v %v\n", string(res[1]), string(res[2]))
+			fmt.Printf("\tLatency Stats Stdev:\t%v %v\n", string(res[3]), string(res[4]))
+			fmt.Printf("\tLatency Stats Max:\t%v %v\n", string(res[5]), string(res[6]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -134,9 +136,11 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 			err = fmt.Errorf("\n\t%v", err)
 		}
 
-		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
-		fmt.Printf("\t%v\t%v\n", string(res[3]), string(res[4]))
-		fmt.Printf("\t%v\t%v\n", string(res[5]), string(res[6]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tReq/Sec Stats Avg:\t%v %v\n", string(res[1]), string(res[2]))
+			fmt.Printf("\tReq/Sec Stats Stdev:\t%v %v\n", string(res[3]), string(res[4]))
+			fmt.Printf("\tReq/Sec Stats Max:\t%v %v\n", string(res[5]), string(res[6]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -149,7 +153,9 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 			err = fmt.Errorf("\n\t%v", err)
 		}
 
-		fmt.Printf("\t%v\t%v\n", string(res[1]), string(res[2]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tLatency Distribution\n\t\t\t[99%%]:\t%v %v\n", string(res[1]), string(res[2]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -160,7 +166,9 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tRequests/sec:\t\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -171,7 +179,9 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tRequests:\t\t%v\n", string(res[1]))
+		}
 	} else {
 		err = fmt.Errorf("%v\n\tParse error: %v", err, res)
 	}
@@ -182,7 +192,8 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 		if err != nil {
 			err = fmt.Errorf("\n\t%v", err)
 		}
-		fmt.Printf("\t%v\n", string(res[1]))
+		// Print without Verbose checking
+		fmt.Printf("\tFailed Requests:\t\t%v\n", string(res[1]))
 	} else {
 		result.FailedRequests = 0
 	}

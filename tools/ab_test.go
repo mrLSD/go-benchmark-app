@@ -53,7 +53,6 @@ Percentage of the requests served within a certain time (ms)
   98%     12
   99%     13
  100%     13 (longest request)
-
 `
 
 // TestAbBenchCommand - test AB command generator
@@ -97,6 +96,7 @@ func TestAbBenchCommand(t *testing.T) {
 func TestAbCommonResults(t *testing.T) {
 	var tool AbTool
 
+	cfg.Cfg.Verbose = true
 	config := &cfg.Config{}
 	config.Ab.Keepalive = false
 	config.Ab.Concurency = 1

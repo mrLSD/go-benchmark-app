@@ -74,10 +74,7 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 
 	res := failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
-		result.FailedRequests, err = strconv.Atoi(string(res[1]))
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.FailedRequests, _ = strconv.Atoi(string(res[1]))
 		if config.Cfg.Verbose {
 			fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
 		}
@@ -87,10 +84,7 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 
 	res = requestsPerSecond.FindSubmatch(data)
 	if len(res) > 1 {
-		result.RequestsPerSecond, err = strconv.ParseFloat(string(res[1]), 32)
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.RequestsPerSecond, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tRequests Per Second:\t%v\n", string(res[1]))
 		}
@@ -100,11 +94,8 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 
 	res = timePerRequest.FindSubmatch(data)
 	if len(res) > 2 {
-		result.TimePerRequest.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.TimePerRequest.Time, _ = strconv.ParseFloat(string(res[1]), 32)
 		result.TimePerRequest.Quantor = string(res[2])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 		if config.Cfg.Verbose {
 			fmt.Printf("\tTime Per Request:\t%v\t%v\n", string(res[1]), string(res[2]))
 		}
@@ -114,11 +105,8 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 
 	res = timePerRequestAll.FindSubmatch(data)
 	if len(res) > 2 {
-		result.TimePerRequestAll.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.TimePerRequestAll.Time, _ = strconv.ParseFloat(string(res[1]), 32)
 		result.TimePerRequestAll.Quantor = string(res[2])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 		if config.Cfg.Verbose {
 			fmt.Printf("\tTime Per Request [avg]:\t%v %v\n", string(res[1]), string(res[2]))
 		}
@@ -128,11 +116,8 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 
 	res = transferRate.FindSubmatch(data)
 	if len(res) > 2 {
-		result.TransferRate.Transfer, err = strconv.ParseFloat(string(res[1]), 32)
+		result.TransferRate.Transfer, _ = strconv.ParseFloat(string(res[1]), 32)
 		result.TransferRate.Rate = string(res[2])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 		if config.Cfg.Verbose {
 			fmt.Printf("\tTransfer Rate:\t\t%v %v\n", string(res[1]), string(res[2]))
 		}

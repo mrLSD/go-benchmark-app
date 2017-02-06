@@ -26,9 +26,16 @@ cover:
 
 coverprofiles:
 	@rm -rf *.coverprofile
-	@for Package in `go list ./... | grep -v "vendor"` ; do \
-		x=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 5 | head -n 1` ; \
-		echo $$(go test -covermode=count -coverprofile=$$x.coverprofile $$Package) ; \
-		echo $$Package ; \
-	done
+	@sh ./test_cover.sh
+#	for Package in `go list ./... | grep -v "vendor"` ; do \
+#		echo `cat /dev/urandom | tr -dc "a-zA-Z0-9" | fold -w 5 | head -n 1` ; \
+#		echo $$(go test -covermode=count -coverprofile=$$x.coverprofile $$Package) ; \
+#		echo $$Package ; \
+#	done
 
+allcoverprofiles:
+	@rm -rf *.coverprofile
+	@sh ./test_cover.sh
+	@gocovmerge *.coverprofile > merged.coverprofile
+	@go tool cover -html=merged.coverprofile
+	@rm -rf *.coverprofile

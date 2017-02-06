@@ -17,7 +17,7 @@ script:
   - go build
   - diff -u <(echo -n) <(gofmt -d .)
   - go vet $(go list ./... | grep -v vendor)
-  - make coverprofiles
+  - sh ./test_cover.sh
 
 after_success:
   - gocovmerge *.coverprofile > merged.coverprofile

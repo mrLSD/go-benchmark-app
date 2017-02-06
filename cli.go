@@ -6,6 +6,16 @@ import (
 	cfg "github.com/mrlsd/go-benchmark-app/config"
 )
 
+// cliParams - params fo CLI config
+var cliParams = &cfg.Config{}
+
+// init - init flags (for Testing it separated)
+func init() {
+	flag.StringVar(&cfg.ConfigFile, "c", cfg.ConfigFile, "load configuration from `FILE`")
+	flag.BoolVar(&cliParams.Verbose, "v", false, "verbose output")
+	flag.Usage = usage
+}
+
 // usage - default usaage message
 func usage() {
 	fmt.Printf("Go Benchmark Applications v%s\nOptions:\n", cfg.AppVersion)
@@ -14,10 +24,6 @@ func usage() {
 
 // InitCli - cli flags init and parse
 func InitCli() *cfg.Config {
-	cliParams := &cfg.Config{}
-	flag.StringVar(&cfg.ConfigFile, "c", cfg.ConfigFile, "load configuration from `FILE`")
-	flag.BoolVar(&cliParams.Verbose, "v", false, "verbose output")
-	flag.Usage = usage
 	flag.Parse()
 	return cliParams
 }

@@ -5,12 +5,83 @@ import (
 	cfg "github.com/mrlsd/go-benchmark-app/config"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 )
+
+const AB_RESULT = `
+This is ApacheBench, Version 2.3 <$Revision: 1706008 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Finished 300 requests
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            3000
+
+Document Path:          /123
+Document Length:        19 bytes
+
+Concurrency Level:      100
+Time taken for tests:   0.027 seconds
+Complete requests:      300
+Failed requests:        0
+Non-2xx responses:      300
+Total transferred:      38400 bytes
+HTML transferred:       5700 bytes
+Requests per second:    11038.75 [#/sec] (mean)
+Time per request:       9.059 [ms] (mean)
+Time per request:       0.091 [ms] (mean, across all concurrent requests)
+Transfer rate:          1379.84 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        1    3   0.9      3       5
+Processing:     1    5   1.7      5       8
+Waiting:        1    3   1.5      4       8
+Total:          5    8   1.7      7      13
+
+Percentage of the requests served within a certain time (ms)
+  50%      7
+  66%      8
+  75%      8
+  80%      9
+  90%     10
+  95%     11
+  98%     12
+  99%     13
+ 100%     13 (longest request)
+==>> SIEGE
+Transactions:		      146229 hits
+Availability:		       99.63 %
+Elapsed time:		        9.11 secs
+Data transferred:	        2.65 MB
+Response time:		        0.01 secs
+Transaction rate:	    16051.48 trans/sec
+Throughput:		        0.29 MB/sec
+Concurrency:		       91.92
+Successful transactions:           0
+Failed transactions:	         546
+Longest transaction:	        0.31
+Shortest transaction:	        0.00
+`
 
 // Alias for success runned command
 var runCommandSuccess = func(c string, args ...string) ([]byte, error) {
 	println("	=> runCommandSuccess")
+	return []byte(AB_RESULT), nil
+}
+
+// Alias for success comand  execution
+// but wrong output results
+var runCommandSuccessButWronOutput = func(c string, args ...string) ([]byte, error) {
+	println("	=> runCommandSuccessButWronOutput")
 	return []byte("test"), nil
 }
 
@@ -22,7 +93,8 @@ var runCommandFailed = func(c string, args ...string) ([]byte, error) {
 
 // TestRunBenchmarks - with basic cinfig
 func TestRunBenchmarks(t *testing.T) {
-	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
+	initConfig := &cfg.Config{}
+	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,13 +103,13 @@ func TestRunBenchmarks(t *testing.T) {
 	_, _ = runCommand("/bin/bash")
 
 	RunCommand = runCommandSuccess
+	config.Try = 1
 	config.WaitToRun = 0
 	config.Delay = 0
 
 	err = RunBenchmarks(config)
 	if err != nil {
-		_, ok := err.(*os.PathError)
-		if !ok {
+		if !strings.Contains(err.Error(), "no such file or directory") {
 			t.Fatal(err)
 		}
 	}
@@ -46,11 +118,13 @@ func TestRunBenchmarks(t *testing.T) {
 // TestRunBenchmarksWithWrongAppPath - test with basic config
 // and wrong App Path
 func TestRunBenchmarksWithWrongAppPath(t *testing.T) {
-	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
+	initConfig := &cfg.Config{}
+	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	config.Try = 1
 	config.WaitToRun = 0
 	config.Delay = 0
 
@@ -68,7 +142,8 @@ func TestRunBenchmarksWithWrongAppPath(t *testing.T) {
 // TestRunBenchmarksWithWrongParams - with basic config
 // but some wrong params
 func TestRunBenchmarksWithWrongParams(t *testing.T) {
-	config, err := cfg.LoadConfig(cfg.CONFIG_FILE)
+	initConfig := &cfg.Config{}
+	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,6 +157,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	config.Siege.Concurrent = 1
 	config.Siege.Time = 1
 
+	config.Try = 1
 	config.WaitToRun = 0
 	config.Delay = 0
 
@@ -136,6 +212,8 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 		}
 	}
 
+	// Run Verbose
+	cfg.Cfg.Verbose = true
 	// Wrong Siege Concurrent parameter
 	siegeConfig := *config
 	siegeConfig.Siege.Concurrent = 0
@@ -146,6 +224,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 			t.Fatal("Unexpected exec for siegeConfig")
 		}
 	}
+	cfg.Cfg.Verbose = false
 
 	// Simulate Wrong Kill Process
 	KillProcess = func(cmd *exec.Cmd) error {
@@ -155,5 +234,46 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	err = RunBenchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec for KillProcess")
+	}
+}
+
+// TestRunBenchmarksWronParse - test wron output results
+// for results parsing test
+func TestRunBenchmarksWronParse(t *testing.T) {
+	initConfig := &cfg.Config{}
+	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// All parameters correct
+	config.Ab.Requests = 1
+	config.Ab.Concurency = 1
+	config.Wrk.Threads = 1
+	config.Wrk.Connections = 1
+	config.Wrk.Duration = 1
+	config.Siege.Concurrent = 1
+	config.Siege.Time = 1
+
+	config.Try = 1
+	config.WaitToRun = 0
+	config.Delay = 0
+
+	// Re-init app
+	config.App = []cfg.AppConfig{{
+		Title: "Test Bash",
+		Path:  "/bin/bash",
+	}}
+
+	RunCommand = runCommandSuccessButWronOutput
+	config.Try = 1
+	config.WaitToRun = 0
+	config.Delay = 0
+
+	err = RunBenchmarks(config)
+	if err != nil {
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			t.Fatal(err)
+		}
 	}
 }

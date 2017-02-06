@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	cfg "github.com/mrlsd/go-benchmark-app/config"
-	"os"
 	"testing"
 )
 
@@ -14,9 +13,9 @@ func TestMain(t *testing.T) {
 	main()
 
 	// Test FAILED config
-	if err := os.Rename(cfg.CONFIG_FILE, "config/_main.toml"); err != nil {
-		t.Fatal(err)
-	}
-	defer os.Rename("config/_main.toml", cfg.CONFIG_FILE)
+	cfg.ConfigFile = "config/_main.toml"
 	main()
+
+	// Return truly config - for next tests
+	cfg.ConfigFile = "config/main.toml"
 }

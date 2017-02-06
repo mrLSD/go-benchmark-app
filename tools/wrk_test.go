@@ -68,6 +68,7 @@ func TestWrkBenchCommand(t *testing.T) {
 func TestWrkCommonResults(t *testing.T) {
 	var tool WrkTool
 
+	cfg.Cfg.Verbose = true
 	config := &cfg.Config{}
 	config.Wrk.Connections = 1
 	config.Wrk.Duration = 1

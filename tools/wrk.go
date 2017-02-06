@@ -89,23 +89,14 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res := latencyStats.FindSubmatch(data)
 	if len(res) > 6 {
-		result.LatencyStats.Avg.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.LatencyStats.Avg.Time, _ = strconv.ParseFloat(string(res[1]), 32)
 		result.LatencyStats.Avg.Quantor = string(res[2])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 
-		result.LatencyStats.Stdev.Time, err = strconv.ParseFloat(string(res[3]), 32)
+		result.LatencyStats.Stdev.Time, _ = strconv.ParseFloat(string(res[3]), 32)
 		result.LatencyStats.Stdev.Quantor = string(res[4])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 
-		result.LatencyStats.Max.Time, err = strconv.ParseFloat(string(res[5]), 32)
+		result.LatencyStats.Max.Time, _ = strconv.ParseFloat(string(res[5]), 32)
 		result.LatencyStats.Max.Quantor = string(res[6])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 
 		if config.Cfg.Verbose {
 			fmt.Printf("\tLatency Stats Avg:\t%v %v\n", string(res[1]), string(res[2]))
@@ -118,23 +109,14 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = recSecStats.FindSubmatch(data)
 	if len(res) > 6 {
-		result.RecSecStats.Avg.Transfer, err = strconv.ParseFloat(string(res[1]), 32)
+		result.RecSecStats.Avg.Transfer, _ = strconv.ParseFloat(string(res[1]), 32)
 		result.RecSecStats.Avg.Quantor = string(res[2])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 
-		result.RecSecStats.Stdev.Transfer, err = strconv.ParseFloat(string(res[3]), 32)
+		result.RecSecStats.Stdev.Transfer, _ = strconv.ParseFloat(string(res[3]), 32)
 		result.RecSecStats.Stdev.Quantor = string(res[4])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 
-		result.RecSecStats.Max.Transfer, err = strconv.ParseFloat(string(res[5]), 32)
+		result.RecSecStats.Max.Transfer, _ = strconv.ParseFloat(string(res[5]), 32)
 		result.RecSecStats.Max.Quantor = string(res[6])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
 
 		if config.Cfg.Verbose {
 			fmt.Printf("\tReq/Sec Stats Avg:\t%v %v\n", string(res[1]), string(res[2]))
@@ -147,12 +129,8 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = latencyDistribution99pers.FindSubmatch(data)
 	if len(res) > 2 {
-		result.LatencyDistribution99pers.Time, err = strconv.ParseFloat(string(res[1]), 32)
+		result.LatencyDistribution99pers.Time, _ = strconv.ParseFloat(string(res[1]), 32)
 		result.LatencyDistribution99pers.Quantor = string(res[2])
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
-
 		if config.Cfg.Verbose {
 			fmt.Printf("\tLatency Distribution\n\t\t\t[99%%]:\t%v %v\n", string(res[1]), string(res[2]))
 		}
@@ -162,10 +140,7 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = reqSec.FindSubmatch(data)
 	if len(res) > 1 {
-		result.ReqSec, err = strconv.ParseFloat(string(res[1]), 32)
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.ReqSec, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tRequests/sec:\t\t%v\n", string(res[1]))
 		}
@@ -175,10 +150,7 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = requests.FindSubmatch(data)
 	if len(res) > 1 {
-		result.Requests, err = strconv.Atoi(string(res[1]))
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.Requests, _ = strconv.Atoi(string(res[1]))
 		if config.Cfg.Verbose {
 			fmt.Printf("\tRequests:\t\t%v\n", string(res[1]))
 		}
@@ -188,10 +160,7 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
-		result.FailedRequests, err = strconv.Atoi(string(res[1]))
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.FailedRequests, _ = strconv.Atoi(string(res[1]))
 		// Print without Verbose checking
 		fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
 	} else {

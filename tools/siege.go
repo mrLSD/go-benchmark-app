@@ -66,10 +66,7 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 
 	res := transactions.FindSubmatch(data)
 	if len(res) > 1 {
-		result.Transactions, err = strconv.Atoi(string(res[1]))
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.Transactions, _ = strconv.Atoi(string(res[1]))
 		if config.Cfg.Verbose {
 			fmt.Printf("\tTransactions:\t\t%v\n", string(res[1]))
 		}
@@ -79,10 +76,7 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 
 	res = availability.FindSubmatch(data)
 	if len(res) > 1 {
-		result.Availability, err = strconv.ParseFloat(string(res[1]), 32)
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.Availability, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tAvailability:\t\t%v%%\n", string(res[1]))
 		}
@@ -92,10 +86,7 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 
 	res = transactionRate.FindSubmatch(data)
 	if len(res) > 1 {
-		result.TransactionRate, err = strconv.ParseFloat(string(res[1]), 32)
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.TransactionRate, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tTransaction Rate:\t%v\n", string(res[1]))
 		}
@@ -105,10 +96,7 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 
 	res = concurrency.FindSubmatch(data)
 	if len(res) > 1 {
-		result.Concurrency, err = strconv.ParseFloat(string(res[1]), 32)
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.Concurrency, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tConcurrency:\t\t%v\n", string(res[1]))
 		}
@@ -118,10 +106,7 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 
 	res = longestTransaction.FindSubmatch(data)
 	if len(res) > 1 {
-		result.LongestTransaction, err = strconv.ParseFloat(string(res[1]), 32)
-		if err != nil {
-			err = fmt.Errorf("\n\t%v", err)
-		}
+		result.LongestTransaction, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tLongest Transaction: \t%v\n", string(res[1]))
 		}

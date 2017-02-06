@@ -55,6 +55,7 @@ func TestSiegeBenchCommand(t *testing.T) {
 func TestSiegeCommonResults(t *testing.T) {
 	var tool SiegeTool
 
+	cfg.Cfg.Verbose = true
 	config := &cfg.Config{}
 	config.Siege.Concurrent = 1
 	config.Siege.Time = 1

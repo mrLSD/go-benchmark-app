@@ -9,8 +9,10 @@ import (
 var (
 	// ConfigFile - default config file
 	ConfigFile = "config/main.toml"
+	// AppVersion - current major app version
 	AppVersion = "0.1"
-	Cfg        = &Config{}
+	// Cfg - global config state
+	Cfg = &Config{}
 )
 
 const (

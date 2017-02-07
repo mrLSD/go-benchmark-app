@@ -56,7 +56,7 @@ func (s SiegeResults) Params() []string {
 // Parse - for Siege parsed results
 func (s SiegeResults) Parse(data []byte) (Results, error) {
 	var result SiegeResults
-	var err error = nil
+	var err error
 
 	transactions := regexp.MustCompile(`Transactions:[\s]+([\d\.]+)`)
 	availability := regexp.MustCompile(`Availability:[\s]+([\d\.]+)`)

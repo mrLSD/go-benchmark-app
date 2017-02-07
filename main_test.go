@@ -3,19 +3,20 @@ package main
 import (
 	"fmt"
 	cfg "github.com/mrlsd/go-benchmark-app/config"
+	"github.com/mrlsd/go-benchmark-app/tools"
 	"testing"
 )
 
 // runBenchmarksSuccess - alias for success Run Benchmarks
-var runBenchmarksSuccess = func(config *cfg.Config) error {
+var runBenchmarksSuccess = func(config *cfg.Config) (tools.AggreatedResults, error) {
 	println("	=> runBenchmarksSuccess")
-	return nil
+	return tools.AggreatedResults{}, nil
 }
 
 // runBenchmarksFailed - alias for failed Run Benchmarks
-var runBenchmarksFailed = func(config *cfg.Config) error {
+var runBenchmarksFailed = func(config *cfg.Config) (tools.AggreatedResults, error) {
 	println("	=> runBenchmarksFailed")
-	return fmt.Errorf("test %s", "test")
+	return tools.AggreatedResults{}, fmt.Errorf("test %s", "test")
 }
 
 func TestMain(t *testing.T) {

@@ -22,7 +22,7 @@ var RunCommand = runCommand
 var RunBenchmarks = runBenchmarks
 
 // runBenchmarks - run all benchmarks
-func runBenchmarks(config *config.Config) error {
+func runBenchmarks(config *config.Config) (tools.AggreatedResults, error) {
 	// Init results array
 	var benchResults tools.AggreatedResults
 	benchResults = make(tools.AggreatedResults, len(config.App))
@@ -47,7 +47,7 @@ func runBenchmarks(config *config.Config) error {
 			// Get app command and Run it
 			cmd := exec.Command(config.App[i].Path)
 			if err := cmd.Start(); err != nil {
-				return fmt.Errorf("Failed execute:\n\t%s\n\t%s", config.App[i].Path, err.Error())
+				return benchResults, fmt.Errorf("Failed execute:\n\t%s\n\t%s", config.App[i].Path, err.Error())
 			}
 			// Wait when app starting
 			time.Sleep(config.WaitToRun * time.Second)
@@ -57,7 +57,7 @@ func runBenchmarks(config *config.Config) error {
 				// Generate bench-command
 				results, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/test")
 				if err != nil {
-					return fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
+					return benchResults, fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}
 				// Run specific bench-tool
 				printRunBenchCommand(&results)
@@ -65,13 +65,13 @@ func runBenchmarks(config *config.Config) error {
 				if err != nil {
 					KillProcess(cmd)
 					println(string(output))
-					return fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
+					return benchResults, fmt.Errorf("Bachmark failed result:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}
 
 				// Parse bench-output
 				parsed, err := results.Parse(output)
 				if err != nil {
-					return err
+					return benchResults, err
 				}
 
 				// Aggregate benchmark results by:
@@ -82,11 +82,11 @@ func runBenchmarks(config *config.Config) error {
 			}
 
 			if err := KillProcess(cmd); err != nil {
-				return fmt.Errorf("KillProcess error: %s", err.Error())
+				return benchResults, fmt.Errorf("KillProcess error: %s", err.Error())
 			}
 		}
 	}
-	return nil
+	return benchResults, nil
 }
 
 // killProcess - immediately kill process
@@ -114,8 +114,6 @@ func aggregateResults(data *tools.Results, benchResults *tools.BenchResults) {
 
 // printRunBenchCommand - print running bench-commang
 func printRunBenchCommand(result *tools.Results) {
-	fmt.Printf("\t\t--> %v\n\n", config.Cfg.Verbose)
-
 	if config.Cfg.Verbose {
 		fmt.Printf("Run command: %s %v\n", (*result).Command(), (*result).Params())
 	} else {

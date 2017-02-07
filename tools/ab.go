@@ -64,7 +64,7 @@ func (ab AbResults) Params() []string {
 // Parse - for AB parsed results
 func (ab AbResults) Parse(data []byte) (Results, error) {
 	var result AbResults
-	var err error = nil
+	var err error
 
 	failedRequests := regexp.MustCompile(`Failed.requests:[\s]+([\d]+)`)
 	requestsPerSecond := regexp.MustCompile(`Requests.per.second:[\s]+([\d\.]+).\[`)

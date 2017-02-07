@@ -149,7 +149,7 @@ func TestRunBenchmarks(t *testing.T) {
 	config.WaitToRun = 0
 	config.Delay = 0
 
-	err = RunBenchmarks(config)
+	_, err = RunBenchmarks(config)
 	if err != nil {
 		if !strings.Contains(err.Error(), "no such file or directory") {
 			t.Fatal(err)
@@ -176,7 +176,7 @@ func TestRunBenchmarksWithWrongAppPath(t *testing.T) {
 	} else {
 		t.Fatal("You should have at least one App")
 	}
-	err = RunBenchmarks(config)
+	_, err = RunBenchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec start result")
 	}
@@ -213,7 +213,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 
 	// Success benchmarks
 	RunCommand = runCommandSuccess
-	err = RunBenchmarks(config)
+	_, err = RunBenchmarks(config)
 	if err != nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -223,7 +223,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 
 	// Failed benchmarks
 	RunCommand = runCommandFailed
-	err = RunBenchmarks(config)
+	_, err = RunBenchmarks(config)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -237,7 +237,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	// Wrong AB Concurency parameter
 	abConfig := *config
 	abConfig.Ab.Concurency = 0
-	err = RunBenchmarks(&abConfig)
+	_, err = RunBenchmarks(&abConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -248,7 +248,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	// Wrong WRK Connections parameter
 	wrkConfig := *config
 	wrkConfig.Wrk.Connections = 0
-	err = RunBenchmarks(&wrkConfig)
+	_, err = RunBenchmarks(&wrkConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -261,7 +261,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	// Wrong Siege Concurrent parameter
 	siegeConfig := *config
 	siegeConfig.Siege.Concurrent = 0
-	err = RunBenchmarks(&siegeConfig)
+	_, err = RunBenchmarks(&siegeConfig)
 	if err == nil {
 		_, ok := err.(*os.PathError)
 		if !ok {
@@ -275,7 +275,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 		return fmt.Errorf("test %s", "test")
 	}
 
-	err = RunBenchmarks(config)
+	_, err = RunBenchmarks(config)
 	if err == nil {
 		t.Fatal("Unexpected exec for KillProcess")
 	}
@@ -315,7 +315,7 @@ func TestRunBenchmarksWrongParse(t *testing.T) {
 	config.WaitToRun = 0
 	config.Delay = 0
 
-	err = RunBenchmarks(config)
+	_, err = RunBenchmarks(config)
 	if err == nil {
 		t.Fatal(fmt.Errorf("Unexpected result for: %s", "runCommandSuccessButWronOutput"))
 	}

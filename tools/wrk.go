@@ -78,7 +78,7 @@ func (wrk WrkResults) Params() []string {
 // Parse - for Wrk parsed results
 func (wrk WrkResults) Parse(data []byte) (Results, error) {
 	var result WrkResults
-	var err error = nil
+	var err error
 
 	latencyStats := regexp.MustCompile(`Latency[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
 	recSecStats := regexp.MustCompile(`Req\/Sec[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)[\s]+([\d\.]+)([\w]+)`)
@@ -161,10 +161,13 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 	res = failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
 		result.FailedRequests, _ = strconv.Atoi(string(res[1]))
-		// Print without Verbose checking
-		fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
+		if config.Cfg.Verbose {
+			fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
+		}
 	} else {
-		fmt.Printf("\tFailed Requests:\t%v\n", 0)
+		if config.Cfg.Verbose {
+			fmt.Printf("\tFailed Requests:\t%v\n", 0)
+		}
 		result.FailedRequests = 0
 	}
 

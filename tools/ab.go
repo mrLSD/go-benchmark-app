@@ -139,8 +139,23 @@ func (ab AbResults) Calculate(data *AbResults) AbResults {
 
 	// Check Rate (Kbyte/sec  byte/sec sec) and
 	// concatinate it if not exist
-	if !strings.Contains(data.TransferRate.Rate, ab.TransferRate.Rate) {
-		result.TransferRate.Rate = data.TransferRate.Rate + "" + ab.TransferRate.Rate
+	var resultSplit []string
+	resultSplit = strings.Split(data.TransferRate.Rate, "|")
+	isNew := true
+	for i := 0; i < len(resultSplit); i++ {
+		if resultSplit[i] == ab.TransferRate.Rate {
+			isNew = false
+		}
+	}
+	result.TransferRate.Rate = ab.TransferRate.Rate
+	if isNew {
+		if data.TransferRate.Rate != "" {
+			result.TransferRate.Rate = data.TransferRate.Rate + "|" + ab.TransferRate.Rate
+		} else {
+			result.TransferRate.Rate = ab.TransferRate.Rate
+		}
+	} else {
+		result.TransferRate.Rate = data.TransferRate.Rate
 	}
 	result.TransferRate.Transfer = ab.TransferRate.Transfer/count + data.TransferRate.Transfer
 

@@ -20,5 +20,5 @@ func main() {
 	if err != nil {
 		LogFatal(err)
 	}
-	DataAnalyze(&results)
+	results.DataAnalyze()
 }

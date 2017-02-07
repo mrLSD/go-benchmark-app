@@ -113,3 +113,66 @@ func TestAbCommonResults(t *testing.T) {
 	data = []byte(AB_RESULT)
 	result.Parse(data)
 }
+
+// TestAbCalculate - test AB total results calculation
+func TestAbCalculate(t *testing.T) {
+	initConfig := &cfg.Config{}
+	_, err := cfg.LoadConfig("../"+cfg.ConfigFile, initConfig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cfg.Cfg.Try = 3
+
+	// Init Aggregated results
+	data := make(AggreatedResults, 1)
+	data[0] = make([]BenchResults, cfg.Cfg.Try)
+
+	// Init Results 1
+	result1 := AbResults{}
+	result1.FailedRequests = 100.
+	result1.RequestsPerSecond = 200.
+	result1.TransferRate.Transfer = 60.
+	result1.TransferRate.Rate = "Kbyte/sec"
+	result1.TimePerRequest.Time = 10
+	result1.TimePerRequest.Quantor = "sec"
+	result1.TimePerRequestAll.Time = 12
+	result1.TimePerRequestAll.Quantor = "sec"
+
+	// Init Results 1
+	result2 := AbResults{}
+	result2.FailedRequests = 250.
+	result2.RequestsPerSecond = 50.
+	result2.TransferRate.Transfer = 150.
+	result2.TransferRate.Rate = "byte/sec"
+	result2.TimePerRequest.Time = 20
+	result2.TimePerRequest.Quantor = "min"
+	result2.TimePerRequestAll.Time = 10
+	result2.TimePerRequestAll.Quantor = "min"
+
+	data[0][0].Ab = result1
+	data[0][1].Ab = result2
+	data[0][2].Ab = result2
+
+	result := data.DataAnalyze()
+	if len(result) > 1 {
+		t.Fatalf("Faile result length: %v", "DataAnalyze")
+	}
+
+	// Test PrintResults
+	result[0].Ab.PrintResults()
+	if int(result[0].Ab.FailedRequests) != 200 {
+		t.Fatalf("Error calculation: %v", "FailedRequests")
+	}
+
+	if int(result[0].Ab.RequestsPerSecond) != 100 {
+		t.Fatalf("Error calculation: %v", "RequestsPerSecond")
+	}
+
+	if int(result[0].Ab.TransferRate.Transfer) != 120 {
+		t.Fatalf("Error calculation: %v", "TransferRate.Transfer")
+	}
+
+	if result[0].Ab.TransferRate.Rate != "Kbyte/sec|byte/sec" {
+		t.Fatalf("Error calculation: %#v", result[0].Ab.TransferRate)
+	}
+}

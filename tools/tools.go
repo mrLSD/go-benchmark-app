@@ -40,3 +40,19 @@ func (br *BenchResults) Calculate(data *BenchResults) BenchResults {
 		Ab: br.Ab.Calculate(&data.Ab),
 	}
 }
+
+// DataAnalyze - analyzy benchdata and print it
+func (ar *AggreatedResults) DataAnalyze() []BenchResults {
+	results := make([]BenchResults, len(*ar))
+	for app := 0; app < len(*ar); app++ {
+		for i := 0; i < len((*ar)[app]); i++ {
+			results[app] = (*ar)[app][i].Calculate(&results[app])
+		}
+	}
+
+	return results
+	/*
+		for i := 0; i < len(results); i++ {
+			results[i].Ab.PrintResults()
+		}*/
+}

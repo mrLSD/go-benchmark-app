@@ -5,12 +5,13 @@ import (
 	"github.com/mrlsd/go-benchmark-app/config"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 // AbResults - results for AB benchmarks
 type AbResults struct {
 	commandResults
-	FailedRequests    int
+	FailedRequests    float64
 	RequestsPerSecond float64
 	TransferRate      struct {
 		Transfer float64
@@ -74,7 +75,7 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 
 	res := failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
-		result.FailedRequests, _ = strconv.Atoi(string(res[1]))
+		result.FailedRequests, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
 		}
@@ -126,4 +127,41 @@ func (ab AbResults) Parse(data []byte) (Results, error) {
 	}
 
 	return result, err
+}
+
+// Calculate - mean value of fields
+func (ab AbResults) Calculate(data *AbResults) AbResults {
+	count := float64(config.Cfg.Try)
+	result := AbResults{
+		FailedRequests:    ab.FailedRequests/count + data.FailedRequests,
+		RequestsPerSecond: ab.RequestsPerSecond/count + data.RequestsPerSecond,
+	}
+
+	// Check Rate (Kbyte/sec  byte/sec sec) and
+	// concatinate it if not exist
+	if !strings.Contains(data.TransferRate.Rate, ab.TransferRate.Rate) {
+		result.TransferRate.Rate = data.TransferRate.Rate + "" + ab.TransferRate.Rate
+	}
+	result.TransferRate.Transfer = ab.TransferRate.Transfer/count + data.TransferRate.Transfer
+
+	if !strings.Contains(data.TimePerRequest.Quantor, ab.TimePerRequest.Quantor) {
+		result.TimePerRequest.Quantor = data.TimePerRequest.Quantor + "" + ab.TimePerRequest.Quantor
+	}
+	result.TimePerRequest.Time = ab.TimePerRequest.Time/count + data.TimePerRequest.Time
+
+	if !strings.Contains(data.TimePerRequestAll.Quantor, ab.TimePerRequestAll.Quantor) {
+		result.TimePerRequestAll.Quantor = data.TimePerRequestAll.Quantor + "" + ab.TimePerRequestAll.Quantor
+	}
+	result.TimePerRequestAll.Time = ab.TimePerRequestAll.Time/count + data.TimePerRequestAll.Time
+
+	return result
+}
+
+// PrintResults - print fields
+func (ab AbResults) PrintResults() {
+	fmt.Printf("\tFailed Requests:\t%.2f\n", ab.FailedRequests)
+	fmt.Printf("\tRequests Per Second:\t%.2f\n", ab.RequestsPerSecond)
+	fmt.Printf("\tTime Per Request:\t%.2f %v\n", ab.TimePerRequest.Time, ab.TimePerRequest.Quantor)
+	fmt.Printf("\tTime Per Request [avg]:\t%.2f %v\n", ab.TimePerRequestAll.Time, ab.TimePerRequestAll.Quantor)
+	fmt.Printf("\tTransfer Rate:\t\t%.2f %v\n", ab.TransferRate.Transfer, ab.TransferRate.Rate)
 }

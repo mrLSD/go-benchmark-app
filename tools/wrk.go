@@ -10,9 +10,9 @@ import (
 // WrkResults - results for Wrk benchmarks
 type WrkResults struct {
 	commandResults
-	FailedRequests int
+	FailedRequests float64
 	ReqSec         float64
-	Requests       int
+	Requests       float64
 	LatencyStats   struct {
 		Avg, Stdev, Max struct {
 			Time float64
@@ -150,7 +150,7 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = requests.FindSubmatch(data)
 	if len(res) > 1 {
-		result.Requests, _ = strconv.Atoi(string(res[1]))
+		result.Requests, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tRequests:\t\t%v\n", string(res[1]))
 		}
@@ -160,7 +160,7 @@ func (wrk WrkResults) Parse(data []byte) (Results, error) {
 
 	res = failedRequests.FindSubmatch(data)
 	if len(res) > 1 {
-		result.FailedRequests, _ = strconv.Atoi(string(res[1]))
+		result.FailedRequests, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tFailed Requests:\t%v\n", string(res[1]))
 		}

@@ -10,7 +10,7 @@ import (
 // SiegeResults - results for Siege benchmarks
 type SiegeResults struct {
 	commandResults
-	Transactions       int
+	Transactions       float64
 	Availability       float64
 	TransactionRate    float64
 	Concurrency        float64
@@ -66,7 +66,7 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 
 	res := transactions.FindSubmatch(data)
 	if len(res) > 1 {
-		result.Transactions, _ = strconv.Atoi(string(res[1]))
+		result.Transactions, _ = strconv.ParseFloat(string(res[1]), 32)
 		if config.Cfg.Verbose {
 			fmt.Printf("\tTransactions:\t\t%v\n", string(res[1]))
 		}

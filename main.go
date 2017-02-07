@@ -20,5 +20,5 @@ func main() {
 	if err != nil {
 		LogFatal(err)
 	}
-	fmt.Printf("\n\n%#v", results)
+	DataAnalyze(&results)
 }

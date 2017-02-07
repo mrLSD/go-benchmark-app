@@ -5,7 +5,7 @@ version = "0.1"
 # Delay via try (sec)
 delay = 5
 # How much we should try
-try = 3
+try = 1
 # How long wait when application guaranteed runned (sec)
 waittorun = 2
 
@@ -30,15 +30,3 @@ time = 10
 [[app]]
 title = "Iron pure & minimal"
 path = "/home/evgeny/rs/iron/target/release/iron"
-
-[[app]]
-title = "Nickel pure & minimal"
-path = "/home/evgeny/rs/nickel/target/release/nickel"
-
-# [[app]]
-# title = "Iron CMS"
-# path = "/home/evgeny/rs/iron-cms/target/release/iron-cms"
-
-#  [[app]]
-#  title = "Nickel CMS"
-# path = "/home/evgeny/rs/nickel-cms/target/release/nickel-cms"

@@ -72,10 +72,51 @@ Longest transaction:	        0.31
 Shortest transaction:	        0.00
 `
 
+const WRK_RESULT = `
+Running 10s test @ http://localhost:3000/123
+  100 threads and 5000 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   443.73us  701.77us  24.24ms   93.93%
+    Req/Sec    29.50k     3.64k   41.13k    73.04%
+  Latency Distribution
+     50%  269.00us
+     75%  483.00us
+     90%    0.86ms
+     99%    4.21ms
+  599207 requests in 10.10s, 73.15MB read
+  Non-2xx or 3xx responses: 599207
+Requests/sec:  59353.58
+Transfer/sec:      7.25MB
+`
+
+const SIEGE_RESULT = `
+Transactions:		      146229 hits
+Availability:		       99.63 %
+Elapsed time:		        9.11 secs
+Data transferred:	        2.65 MB
+Response time:		        0.01 secs
+Transaction rate:	    16051.48 trans/sec
+Throughput:		        0.29 MB/sec
+Concurrency:		       91.92
+Successful transactions:           0
+Failed transactions:	         546
+Longest transaction:	        0.31
+Shortest transaction:	        0.00
+
+`
+
 // Alias for success runned command
 var runCommandSuccess = func(c string, args ...string) ([]byte, error) {
-	println("	=> runCommandSuccess")
-	return []byte(AB_RESULT), nil
+	println("\n	=> runCommandSuccess")
+	switch c {
+	case cfg.AB_BENCH:
+		return []byte(AB_RESULT), nil
+	case cfg.WRK_BENCH:
+		return []byte(WRK_RESULT), nil
+	case cfg.SIEGE_BENCH:
+		return []byte(SIEGE_RESULT), nil
+	}
+	return []byte(""), nil
 }
 
 // Alias for success comand  execution
@@ -93,6 +134,7 @@ var runCommandFailed = func(c string, args ...string) ([]byte, error) {
 
 // TestRunBenchmarks - with basic cinfig
 func TestRunBenchmarks(t *testing.T) {
+	RunBenchmarks = runBenchmarks
 	initConfig := &cfg.Config{}
 	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
@@ -118,6 +160,7 @@ func TestRunBenchmarks(t *testing.T) {
 // TestRunBenchmarksWithWrongAppPath - test with basic config
 // and wrong App Path
 func TestRunBenchmarksWithWrongAppPath(t *testing.T) {
+	RunBenchmarks = runBenchmarks
 	initConfig := &cfg.Config{}
 	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
@@ -142,6 +185,7 @@ func TestRunBenchmarksWithWrongAppPath(t *testing.T) {
 // TestRunBenchmarksWithWrongParams - with basic config
 // but some wrong params
 func TestRunBenchmarksWithWrongParams(t *testing.T) {
+	RunBenchmarks = runBenchmarks
 	initConfig := &cfg.Config{}
 	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
@@ -224,7 +268,7 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 			t.Fatal("Unexpected exec for siegeConfig")
 		}
 	}
-	cfg.Cfg.Verbose = false
+	//cfg.Cfg.Verbose = false
 
 	// Simulate Wrong Kill Process
 	KillProcess = func(cmd *exec.Cmd) error {
@@ -237,9 +281,10 @@ func TestRunBenchmarksWithWrongParams(t *testing.T) {
 	}
 }
 
-// TestRunBenchmarksWronParse - test wron output results
+// TestRunBenchmarksWrongParse - test wron output results
 // for results parsing test
-func TestRunBenchmarksWronParse(t *testing.T) {
+func TestRunBenchmarksWrongParse(t *testing.T) {
+	RunBenchmarks = runBenchmarks
 	initConfig := &cfg.Config{}
 	config, err := cfg.LoadConfig(cfg.ConfigFile, initConfig)
 	if err != nil {
@@ -271,9 +316,7 @@ func TestRunBenchmarksWronParse(t *testing.T) {
 	config.Delay = 0
 
 	err = RunBenchmarks(config)
-	if err != nil {
-		if !strings.Contains(err.Error(), "no such file or directory") {
-			t.Fatal(err)
-		}
+	if err == nil {
+		t.Fatal(fmt.Errorf("Unexpected result for: %s", "runCommandSuccessButWronOutput"))
 	}
 }

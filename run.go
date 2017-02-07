@@ -17,8 +17,12 @@ var KillProcess = killProcess
 // execute command and returns its standard output
 var RunCommand = runCommand
 
-// RunBenchmarks - run all benchmarks
-func RunBenchmarks(config *config.Config) error {
+// RunBenchmarks - alias for runBenchmarks
+// Testing requered
+var RunBenchmarks = runBenchmarks
+
+// runBenchmarks - run all benchmarks
+func runBenchmarks(config *config.Config) error {
 	// Init results array
 	var benchResults tools.AggreatedResults
 	benchResults = make(tools.AggreatedResults, len(config.App))
@@ -110,6 +114,8 @@ func aggregateResults(data *tools.Results, benchResults *tools.BenchResults) {
 
 // printRunBenchCommand - print running bench-commang
 func printRunBenchCommand(result *tools.Results) {
+	fmt.Printf("\t\t--> %v\n\n", config.Cfg.Verbose)
+
 	if config.Cfg.Verbose {
 		fmt.Printf("Run command: %s %v\n", (*result).Command(), (*result).Params())
 	} else {

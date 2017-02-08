@@ -226,7 +226,7 @@ func checkTimeQuantor(from, to checkerTimeQuantor) checkerTimeQuantor {
 		"s":  1,
 	}
 	count := float64(config.Cfg.Try)
-	if from.Quantor == to.Quantor {
+	if from.Quantor == to.Quantor || from.Quantor == "" {
 		return checkerTimeQuantor{
 			Time:    to.Time/count + from.Time,
 			Quantor: to.Quantor,
@@ -262,7 +262,7 @@ func checkTransferQuantor(from, to checkerTransferQuantor) checkerTransferQuanto
 		"m": 1,
 	}
 	count := float64(config.Cfg.Try)
-	if from.Quantor == to.Quantor {
+	if from.Quantor == to.Quantor || from.Quantor == "" {
 		return checkerTransferQuantor{
 			Transfer: to.Transfer/count + from.Transfer,
 			Quantor:  to.Quantor,

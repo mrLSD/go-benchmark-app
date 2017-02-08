@@ -37,7 +37,8 @@ type AggreatedResults [][]BenchResults
 // Calculate benchmarks results
 func (br *BenchResults) Calculate(data *BenchResults) BenchResults {
 	return BenchResults{
-		Ab: br.Ab.Calculate(&data.Ab),
+		Ab:  br.Ab.Calculate(&data.Ab),
+		Wrk: br.Wrk.Calculate(&data.Wrk),
 	}
 }
 

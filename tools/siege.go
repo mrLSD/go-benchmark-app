@@ -25,7 +25,7 @@ type SiegeTool struct {
 // BenchCommand - generate valid Siege command
 func (s SiegeTool) BenchCommand(url string) (Results, error) {
 	var params []string
-	var results SiegeResults = SiegeResults{}
+	results := SiegeResults{}
 	if s.Concurrent > 0 {
 		params = append(params, fmt.Sprintf("-c%d", s.Concurrent))
 	} else {
@@ -115,4 +115,27 @@ func (s SiegeResults) Parse(data []byte) (Results, error) {
 	}
 
 	return result, err
+}
+
+// Calculate - mean value of fields
+func (s SiegeResults) Calculate(data *SiegeResults) SiegeResults {
+	count := float64(config.Cfg.Try)
+	result := SiegeResults{
+		Transactions:       s.Transactions/count + data.Transactions,
+		Availability:       s.Availability/count + data.Availability,
+		TransactionRate:    s.TransactionRate/count + data.TransactionRate,
+		Concurrency:        s.Concurrency/count + data.Concurrency,
+		LongestTransaction: s.LongestTransaction/count + data.LongestTransaction,
+	}
+
+	return result
+}
+
+// PrintResults - print fields
+func (s SiegeResults) PrintResults() {
+	fmt.Printf("\tTransactions:\t\t%v\n", s.Transactions)
+	fmt.Printf("\tAvailability:\t\t%v%%\n", s.Availability)
+	fmt.Printf("\tTransaction Rate:\t%v\n", s.TransactionRate)
+	fmt.Printf("\tConcurrency:\t\t%v\n", s.Concurrency)
+	fmt.Printf("\tLongest Transaction: \t%v\n", s.LongestTransaction)
 }

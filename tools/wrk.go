@@ -42,7 +42,7 @@ type WrkTool struct {
 // BenchCommand - generate valid WRK command
 func (wrk WrkTool) BenchCommand(url string) (Results, error) {
 	var params []string
-	var results WrkResults = WrkResults{}
+	results := WrkResults{}
 	if wrk.Connections > 0 {
 		params = append(params, fmt.Sprintf("-c%d", wrk.Connections))
 	} else {

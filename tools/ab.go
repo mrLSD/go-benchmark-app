@@ -34,7 +34,7 @@ type AbTool struct {
 // BenchCommand - generate valid AB command
 func (ab AbTool) BenchCommand(url string) (Results, error) {
 	var params []string
-	var results AbResults = AbResults{}
+	results := AbResults{}
 
 	if ab.Keepalive {
 		params = append(params, "-k")
@@ -173,9 +173,8 @@ func checkStr(from, add string) string {
 	if isNew {
 		if from != "" {
 			return from + "|" + add
-		} else {
-			return add
 		}
+		return add
 	}
 	return from
 }

@@ -71,3 +71,35 @@ func TestSiegeCommonResults(t *testing.T) {
 	data = []byte(SIEGE_RESULT)
 	result.Parse(data)
 }
+
+// TestSiegeCalculate - test Siege total results calculation
+func TestSiegeCalculate(t *testing.T) {
+	initConfig := &cfg.Config{}
+	_, err := cfg.LoadConfig("../"+cfg.ConfigFile, initConfig)
+	if err != nil {
+		t.Fatal(err)
+	}
+	cfg.Cfg.Try = 3
+
+	// Init Aggregated results
+	data := make(AggreatedResults, 1)
+	data[0] = make([]BenchResults, cfg.Cfg.Try)
+
+	// Init Results 1
+	result1 := SiegeResults{}
+
+	// Init Results 2
+	result2 := SiegeResults{}
+
+	data[0][0].Siege = result1
+	data[0][1].Siege = result2
+	data[0][2].Siege = result2
+
+	result := data.DataAnalyze()
+	if len(result) > 1 {
+		t.Fatalf("Faile result length: %v", "DataAnalyze")
+	}
+
+	// Test PrintResults
+	result[0].Siege.PrintResults()
+}

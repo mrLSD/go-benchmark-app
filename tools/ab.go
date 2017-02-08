@@ -139,34 +139,13 @@ func (ab AbResults) Calculate(data *AbResults) AbResults {
 
 	// Check Rate (Kbyte/sec  byte/sec sec) and
 	// concatinate it if not exist
-	var resultSplit []string
-	resultSplit = strings.Split(data.TransferRate.Rate, "|")
-	isNew := true
-	for i := 0; i < len(resultSplit); i++ {
-		if resultSplit[i] == ab.TransferRate.Rate {
-			isNew = false
-		}
-	}
-	result.TransferRate.Rate = ab.TransferRate.Rate
-	if isNew {
-		if data.TransferRate.Rate != "" {
-			result.TransferRate.Rate = data.TransferRate.Rate + "|" + ab.TransferRate.Rate
-		} else {
-			result.TransferRate.Rate = ab.TransferRate.Rate
-		}
-	} else {
-		result.TransferRate.Rate = data.TransferRate.Rate
-	}
+	result.TransferRate.Rate = checkStr(data.TransferRate.Rate, ab.TransferRate.Rate)
 	result.TransferRate.Transfer = ab.TransferRate.Transfer/count + data.TransferRate.Transfer
 
-	if !strings.Contains(data.TimePerRequest.Quantor, ab.TimePerRequest.Quantor) {
-		result.TimePerRequest.Quantor = data.TimePerRequest.Quantor + "" + ab.TimePerRequest.Quantor
-	}
+	result.TimePerRequest.Quantor = checkStr(data.TimePerRequest.Quantor, ab.TimePerRequest.Quantor)
 	result.TimePerRequest.Time = ab.TimePerRequest.Time/count + data.TimePerRequest.Time
 
-	if !strings.Contains(data.TimePerRequestAll.Quantor, ab.TimePerRequestAll.Quantor) {
-		result.TimePerRequestAll.Quantor = data.TimePerRequestAll.Quantor + "" + ab.TimePerRequestAll.Quantor
-	}
+	result.TimePerRequestAll.Quantor = checkStr(data.TimePerRequestAll.Quantor, ab.TimePerRequestAll.Quantor)
 	result.TimePerRequestAll.Time = ab.TimePerRequestAll.Time/count + data.TimePerRequestAll.Time
 
 	return result
@@ -179,4 +158,24 @@ func (ab AbResults) PrintResults() {
 	fmt.Printf("\tTime Per Request:\t%.2f %v\n", ab.TimePerRequest.Time, ab.TimePerRequest.Quantor)
 	fmt.Printf("\tTime Per Request [avg]:\t%.2f %v\n", ab.TimePerRequestAll.Time, ab.TimePerRequestAll.Quantor)
 	fmt.Printf("\tTransfer Rate:\t\t%.2f %v\n", ab.TransferRate.Transfer, ab.TransferRate.Rate)
+}
+
+// checkStr - check string and concatinate it
+func checkStr(from, add string) string {
+	var resultSplit []string
+	resultSplit = strings.Split(from, "|")
+	isNew := true
+	for i := 0; i < len(resultSplit); i++ {
+		if resultSplit[i] == add {
+			isNew = false
+		}
+	}
+	if isNew {
+		if from != "" {
+			return from + "|" + add
+		} else {
+			return add
+		}
+	}
+	return from
 }

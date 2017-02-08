@@ -135,7 +135,7 @@ func TestAbCalculate(t *testing.T) {
 	result1.TransferRate.Rate = "Kbyte/sec"
 	result1.TimePerRequest.Time = 10
 	result1.TimePerRequest.Quantor = "sec"
-	result1.TimePerRequestAll.Time = 12
+	result1.TimePerRequestAll.Time = 30
 	result1.TimePerRequestAll.Quantor = "sec"
 
 	// Init Results 1
@@ -144,9 +144,9 @@ func TestAbCalculate(t *testing.T) {
 	result2.RequestsPerSecond = 50.
 	result2.TransferRate.Transfer = 150.
 	result2.TransferRate.Rate = "byte/sec"
-	result2.TimePerRequest.Time = 20
+	result2.TimePerRequest.Time = 25
 	result2.TimePerRequest.Quantor = "min"
-	result2.TimePerRequestAll.Time = 10
+	result2.TimePerRequestAll.Time = 15
 	result2.TimePerRequestAll.Quantor = "min"
 
 	data[0][0].Ab = result1
@@ -174,5 +174,21 @@ func TestAbCalculate(t *testing.T) {
 
 	if result[0].Ab.TransferRate.Rate != "Kbyte/sec|byte/sec" {
 		t.Fatalf("Error calculation: %#v", result[0].Ab.TransferRate)
+	}
+
+	if int(result[0].Ab.TimePerRequest.Time) != 20 {
+		t.Fatalf("Error calculation: %v", "TimePerRequest.Time")
+	}
+
+	if result[0].Ab.TimePerRequest.Quantor != "sec|min" {
+		t.Fatalf("Error calculation: %#v", "TimePerRequest.Quantor")
+	}
+
+	if int(result[0].Ab.TimePerRequestAll.Time) != 20 {
+		t.Fatalf("Error calculation: %v", "TimePerRequestAll.Time")
+	}
+
+	if result[0].Ab.TimePerRequestAll.Quantor != "sec|min" {
+		t.Fatalf("Error calculation: %#v", "TimePerRequestAll.Quantor")
 	}
 }

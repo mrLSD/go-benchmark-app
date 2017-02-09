@@ -87,9 +87,19 @@ func TestSiegeCalculate(t *testing.T) {
 
 	// Init Results 1
 	result1 := SiegeResults{}
+	result1.Transactions = 90.
+	result1.Availability = 99.
+	result1.Concurrency = 90.
+	result1.LongestTransaction = 1.2
+	result1.TransactionRate = 1200
 
 	// Init Results 2
 	result2 := SiegeResults{}
+	result2.Transactions = 180.
+	result2.Availability = 66.
+	result2.Concurrency = 60.
+	result2.LongestTransaction = 1.5
+	result2.TransactionRate = 1500
 
 	data[0][0].Siege = result1
 	data[0][1].Siege = result2
@@ -102,4 +112,20 @@ func TestSiegeCalculate(t *testing.T) {
 
 	// Test PrintResults
 	result[0].Siege.PrintResults()
+
+	if int(result[0].Siege.Transactions) != 150 {
+		t.Fatalf("Error calculation: %v", "Siege.TransactionRate")
+	}
+
+	if int(result[0].Siege.Availability) != 77 {
+		t.Fatalf("Error calculation: %v", "Siege.Availability")
+	}
+
+	if result[0].Siege.LongestTransaction != 1.4 {
+		t.Fatalf("Error calculation: %v", "Siege.LongestTransaction")
+	}
+
+	if int(result[0].Siege.TransactionRate) != 1400 {
+		t.Fatalf("Error calculation: %v", "Siege.TransactionRate")
+	}
 }

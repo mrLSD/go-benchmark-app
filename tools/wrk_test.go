@@ -186,7 +186,7 @@ func TestWrkCalculate(t *testing.T) {
 		t.Fatalf("Error calculation: %v", "LatencyStats.Max.Quantor")
 	}
 
-	if result[0].Wrk.RecSecStats.Avg.Transfer != 28 {
+	if int(result[0].Wrk.RecSecStats.Avg.Transfer) != 28 {
 		t.Fatalf("Error calculation: %v", "Wrk.RecSecStats.Avg.Transfer")
 	}
 
@@ -194,7 +194,7 @@ func TestWrkCalculate(t *testing.T) {
 		t.Fatalf("Error calculation: %v", "Wrk.RecSecStats.Avg.Quantor")
 	}
 
-	if result[0].Wrk.RecSecStats.Stdev.Transfer != 1640 {
+	if int(result[0].Wrk.RecSecStats.Stdev.Transfer) != 1640 {
 		t.Fatalf("Error calculation: %v", "Wrk.RecSecStats.Stdev.Transfer")
 	}
 
@@ -202,7 +202,7 @@ func TestWrkCalculate(t *testing.T) {
 		t.Fatalf("Error calculation: %v", "Wrk.RecSecStats.Stdev.Quantor")
 	}
 
-	if result[0].Wrk.RecSecStats.Max.Transfer != 280 {
+	if int(result[0].Wrk.RecSecStats.Max.Transfer) != 280 {
 		t.Fatalf("Error calculation: %v", "Wrk.RecSecStats.Max.Transfer")
 	}
 
@@ -210,7 +210,7 @@ func TestWrkCalculate(t *testing.T) {
 		t.Fatalf("Error calculation: %v", "Wrk.RecSecStats.Max.Quantor")
 	}
 
-	if result[0].Wrk.LatencyDistribution99pers.Time != 800 {
+	if int(result[0].Wrk.LatencyDistribution99pers.Time) != 800 {
 		t.Fatalf("Error calculation: %v", "Wrk.LatencyDistribution99pers.Time")
 	}
 

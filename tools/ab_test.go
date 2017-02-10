@@ -191,4 +191,15 @@ func TestAbCalculate(t *testing.T) {
 	if result[0].Ab.TimePerRequestAll.Quantor != "sec|min" {
 		t.Fatalf("Error calculation: %#v", "TimePerRequestAll.Quantor")
 	}
+
+	config := &cfg.Config{
+		App: []cfg.AppConfig{
+			{
+				Title: "Test 1",
+				Path:  "/bin/bash",
+				Url:   "test",
+			},
+		},
+	}
+	PrintResults(&result, config)
 }

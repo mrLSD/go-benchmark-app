@@ -33,6 +33,6 @@ path = "/home/evgeny/gb/apps/iron.sh"
 url = "http://localhost:3000/"
 
 [[app]]
-title = "Nimel pure & minimal"
+title = "Nickel pure & minimal"
 path = "/home/evgeny/gb/apps/nickel.sh"
 url = "http://localhost:3000/"

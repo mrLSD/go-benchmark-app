@@ -128,4 +128,15 @@ func TestSiegeCalculate(t *testing.T) {
 	if int(result[0].Siege.TransactionRate) != 1400 {
 		t.Fatalf("Error calculation: %v", "Siege.TransactionRate")
 	}
+
+	config := &cfg.Config{
+		App: []cfg.AppConfig{
+			{
+				Title: "Test 1",
+				Path:  "/bin/bash",
+				Url:   "test",
+			},
+		},
+	}
+	PrintResults(&result, config)
 }

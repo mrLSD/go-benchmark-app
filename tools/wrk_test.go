@@ -217,4 +217,15 @@ func TestWrkCalculate(t *testing.T) {
 	if result[0].Wrk.LatencyDistribution99pers.Quantor != "us" {
 		t.Fatalf("Error calculation: %v", "Wrk.LatencyDistribution99pers.Quantor")
 	}
+
+	config := &cfg.Config{
+		App: []cfg.AppConfig{
+			{
+				Title: "Test 1",
+				Path:  "/bin/bash",
+				Url:   "test",
+			},
+		},
+	}
+	PrintResults(&result, config)
 }

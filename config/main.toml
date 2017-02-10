@@ -5,7 +5,7 @@ version = "0.1"
 # Delay via try (sec)
 delay = 5
 # How much we should try
-try = 1
+try = 2
 # How long wait when application guaranteed runned (sec)
 waittorun = 2
 
@@ -29,4 +29,4 @@ time = 10
 # Applications parametres
 [[app]]
 title = "Iron pure & minimal"
-path = "/home/evgeny/rs/iron/target/release/iron"
+path = "/home/evgeny/gb/apps/iron.sh"

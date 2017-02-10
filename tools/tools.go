@@ -1,5 +1,10 @@
 package tools
 
+import (
+	"fmt"
+	"github.com/mrlsd/go-benchmark-app/config"
+)
+
 // Results - interface for useful Results methods
 type Results interface {
 	Command() string
@@ -51,10 +56,18 @@ func (ar *AggreatedResults) DataAnalyze() []BenchResults {
 			results[app] = (*ar)[app][i].Calculate(&results[app])
 		}
 	}
-
 	return results
-	/*
-		for i := 0; i < len(results); i++ {
-			results[i].Ab.PrintResults()
-		}*/
+}
+
+// PrintResults - to standart output
+func PrintResults(results *[]BenchResults, config *config.Config) {
+	for i := 0; i < len(*results); i++ {
+		fmt.Printf("%s:\n", config.App[i].Title)
+		fmt.Println("  [Ab Benchmark results]")
+		(*results)[i].Ab.PrintResults()
+		fmt.Println("  [Wrk Benchmark results]")
+		(*results)[i].Wrk.PrintResults()
+		fmt.Println("  [Siege Benchmark results]")
+		(*results)[i].Siege.PrintResults()
+	}
 }

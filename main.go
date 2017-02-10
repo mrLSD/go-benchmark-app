@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	cfg "github.com/mrlsd/go-benchmark-app/config"
+	"github.com/mrlsd/go-benchmark-app/tools"
 	"log"
 )
 
@@ -20,5 +21,6 @@ func main() {
 	if err != nil {
 		LogFatal(err)
 	}
-	results.DataAnalyze()
+	prittableResults := results.DataAnalyze()
+	tools.PrintResults(&prittableResults, config)
 }

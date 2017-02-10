@@ -198,18 +198,18 @@ func (wrk WrkResults) Calculate(data *WrkResults) WrkResults {
 
 // PrintResults - print fields
 func (wrk WrkResults) PrintResults() {
-	fmt.Printf("\tLatency Stats Avg:\t%v %v\n", wrk.LatencyStats.Avg.Time, wrk.LatencyStats.Avg.Quantor)
-	fmt.Printf("\tLatency Stats Stdev:\t%v %v\n", wrk.LatencyStats.Stdev.Time, wrk.LatencyStats.Stdev.Quantor)
-	fmt.Printf("\tLatency Stats Max:\t%v %v\n", wrk.LatencyStats.Max.Time, wrk.LatencyStats.Max.Quantor)
+	fmt.Printf("\tLatency Stats Avg:\t%.2f %v\n", wrk.LatencyStats.Avg.Time, wrk.LatencyStats.Avg.Quantor)
+	fmt.Printf("\tLatency Stats Stdev:\t%.2f %v\n", wrk.LatencyStats.Stdev.Time, wrk.LatencyStats.Stdev.Quantor)
+	fmt.Printf("\tLatency Stats Max:\t%.2f %v\n", wrk.LatencyStats.Max.Time, wrk.LatencyStats.Max.Quantor)
 
-	fmt.Printf("\tReq/Sec Stats Avg:\t%v %v\n", wrk.RecSecStats.Avg.Transfer, wrk.RecSecStats.Avg.Quantor)
-	fmt.Printf("\tReq/Sec Stats Stdev:\t%v %v\n", wrk.RecSecStats.Stdev.Transfer, wrk.RecSecStats.Stdev.Quantor)
-	fmt.Printf("\tReq/Sec Stats Max:\t%v %v\n", wrk.RecSecStats.Max.Transfer, wrk.RecSecStats.Max.Quantor)
+	fmt.Printf("\tReq/Sec Stats Avg:\t%.2f %v\n", wrk.RecSecStats.Avg.Transfer, wrk.RecSecStats.Avg.Quantor)
+	fmt.Printf("\tReq/Sec Stats Stdev:\t%.2f %v\n", wrk.RecSecStats.Stdev.Transfer, wrk.RecSecStats.Stdev.Quantor)
+	fmt.Printf("\tReq/Sec Stats Max:\t%.2f %v\n", wrk.RecSecStats.Max.Transfer, wrk.RecSecStats.Max.Quantor)
 
-	fmt.Printf("\tLatency Distribution\n\t\t\t[99%%]:\t%v %v\n", wrk.LatencyDistribution99pers.Time, wrk.LatencyDistribution99pers.Quantor)
-	fmt.Printf("\tRequests/sec:\t\t%v\n", wrk.ReqSec)
-	fmt.Printf("\tRequests:\t\t%v\n", wrk.Requests)
-	fmt.Printf("\tFailed Requests:\t%v\n", wrk.FailedRequests)
+	fmt.Printf("\tLatency Distribution\n\t\t\t[99%%]:\t%.2f %v\n", wrk.LatencyDistribution99pers.Time, wrk.LatencyDistribution99pers.Quantor)
+	fmt.Printf("\tRequests/sec:\t\t%.2f\n", wrk.ReqSec)
+	fmt.Printf("\tRequests:\t\t%.2f\n", wrk.Requests)
+	fmt.Printf("\tFailed Requests:\t%.2f\n", wrk.FailedRequests)
 }
 
 // checkerTimeQuantor - type for checkTimeQuantor

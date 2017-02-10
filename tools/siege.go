@@ -133,9 +133,9 @@ func (s SiegeResults) Calculate(data *SiegeResults) SiegeResults {
 
 // PrintResults - print fields
 func (s SiegeResults) PrintResults() {
-	fmt.Printf("\tTransactions:\t\t%v\n", s.Transactions)
-	fmt.Printf("\tAvailability:\t\t%v%%\n", s.Availability)
-	fmt.Printf("\tTransaction Rate:\t%v\n", s.TransactionRate)
-	fmt.Printf("\tConcurrency:\t\t%v\n", s.Concurrency)
-	fmt.Printf("\tLongest Transaction: \t%v\n", s.LongestTransaction)
+	fmt.Printf("\tTransactions:\t\t%.2f\n", s.Transactions)
+	fmt.Printf("\tAvailability:\t\t%.2f%%\n", s.Availability)
+	fmt.Printf("\tTransaction Rate:\t%.2f\n", s.TransactionRate)
+	fmt.Printf("\tConcurrency:\t\t%.2f\n", s.Concurrency)
+	fmt.Printf("\tLongest Transaction: \t%.2f\n", s.LongestTransaction)
 }

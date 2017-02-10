@@ -66,7 +66,7 @@ type SiegeConfig struct {
 type AppConfig struct {
 	Title string
 	Path  string
-	url   []string
+	Url   string
 }
 
 // LoadConfig - load TOML config file

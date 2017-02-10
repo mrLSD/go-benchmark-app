@@ -3,9 +3,9 @@ title = "CMS benchmarks"
 # Benchmarks version
 version = "0.1"
 # Delay via try (sec)
-delay = 5
+delay = 60
 # How much we should try
-try = 2
+try = 3
 # How long wait when application guaranteed runned (sec)
 waittorun = 2
 
@@ -30,3 +30,9 @@ time = 10
 [[app]]
 title = "Iron pure & minimal"
 path = "/home/evgeny/gb/apps/iron.sh"
+url = "http://localhost:3000/"
+
+[[app]]
+title = "Nimel pure & minimal"
+path = "/home/evgeny/gb/apps/nickel.sh"
+url = "http://localhost:3000/"

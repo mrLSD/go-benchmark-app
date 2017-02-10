@@ -55,7 +55,7 @@ func runBenchmarks(config *config.Config) (tools.AggreatedResults, error) {
 			// Go through Benchmark tools
 			for j := 0; j < len(benchmarkTools); j++ {
 				// Generate bench-command
-				results, err := benchmarkTools[j].tool.BenchCommand("http://localhost:3000/test")
+				results, err := benchmarkTools[j].tool.BenchCommand(config.App[i].Url)
 				if err != nil {
 					return benchResults, fmt.Errorf("Failed run bachmark tool:\n\t%s \n\t%v \n\t%s", results.Command(), results.Params(), err)
 				}

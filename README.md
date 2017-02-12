@@ -58,6 +58,7 @@ time = 30
 [[app]]
 title = "Application Banchamrs Title"
 path = "fool/path/to/app"
+url = "http://localhost:5000/test"
 ````
 
 ## How to use
@@ -69,8 +70,44 @@ path = "fool/path/to/app"
 	`$ whereis wrk`
 	
 	`$ whereis siege` 
-* Configure `config/main.toml` as mentioned before.
-* Build application: `$ make build`
-* Run application: `$ make run` or after build `$ ./go-benchmark-app`
+* Configure `config/main.toml` in current dirrectory as mentioned before.
+* Install application: `$ go install github.com/mrlsd/go-benchmark-app`
+* Command-line help: `$ go-benchmark-app -h`
+```
+Go Benchmark Applications v1.0.0
+Options:
+  -c FILE
+    	load configuration from FILE (default "config/main.toml")
+  -v	verbose output
+```
+* To change config file - run: `$ go-benchmark-app -c path/to/cfg.toml`
+* Verbose output: `$ go-benchmark-app -v`
+
+## Tips & Tricks
+* When your benchmarks test failed with socket error 
+(more resources unawailable), try increase `delay` options
+ at config file (for example 60 sec) or/and change system 
+ limits to opened files, TCP/IP configuration and other 
+ system limitations.
+* For flexibility running test applications you can create
+recipe for that. For example set at config file:
+```
+[[app]]
+title = "My App"
+path = "apps/myapp.sh"
+url = "http://localhost:5000/test"
+```
+
+and `apps/myapp.sh` file:
+```
+#!/bin/sh
+prepare -to -run
+/full/path/to/app -v param -d param -etc
+```
+in that way you can run `docker`, `nginx` or another
+useful commands.
+
+For one application we use one `URL`, because it's simplify
+results analyze, interpretation, comparison.
 
 #### License: MIT [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/mrLSD/go-benchmark-app/master/LICENSE)

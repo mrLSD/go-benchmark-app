@@ -10,7 +10,7 @@ var (
 	// ConfigFile - default config file
 	ConfigFile = "config/main.toml"
 	// AppVersion - current major app version
-	AppVersion = "0.1"
+	AppVersion = "1.0.0"
 	// Cfg - global config state
 	Cfg = &Config{}
 )

@@ -5,9 +5,9 @@ version = "0.1"
 # Delay via try (sec)
 delay = 60
 # How much we should try
-try = 3
+try = 5
 # How long wait when application guaranteed runned (sec)
-waittorun = 2
+waittorun = 3
 
 # ab benchmarks parametres
 [ab]
@@ -35,4 +35,14 @@ url = "http://localhost:3000/"
 [[app]]
 title = "Nickel pure & minimal"
 path = "/home/evgeny/gb/apps/nickel.sh"
+url = "http://localhost:3000/"
+
+[[app]]
+title = "Iron CMS minimal"
+path = "/home/evgeny/gb/apps/iron-cms.sh"
+url = "http://localhost:3000/"
+
+[[app]]
+title = "Nickel CMS minimal"
+path = "/home/evgeny/gb/apps/nickel-cms.sh"
 url = "http://localhost:3000/"

@@ -26,16 +26,17 @@ const (
 
 // Config - base config
 type Config struct {
-	Verbose   bool
-	Title     string
-	Version   string
-	Delay     time.Duration
-	WaitToRun time.Duration
-	Try       int
-	Ab        AbConfig
-	Wrk       WrkConfig
-	Siege     SiegeConfig
-	App       []AppConfig
+	Verbose    bool
+	HtmlOutput bool
+	Title      string
+	Version    string
+	Delay      time.Duration
+	WaitToRun  time.Duration
+	Try        int
+	Ab         AbConfig
+	Wrk        WrkConfig
+	Siege      SiegeConfig
+	App        []AppConfig
 }
 
 // AbConfig - config for AB benchmark

@@ -13,6 +13,7 @@ var cliParams = &cfg.Config{}
 func init() {
 	flag.StringVar(&cfg.ConfigFile, "c", cfg.ConfigFile, "load configuration from `FILE`")
 	flag.BoolVar(&cliParams.Verbose, "v", false, "verbose output")
+	flag.BoolVar(&cliParams.HtmlOutput, "html", false, "render results to HTML output and open it with default browser")
 	flag.Usage = usage
 }
 
